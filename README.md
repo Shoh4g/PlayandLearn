@@ -1,8 +1,10 @@
 # Play_And_Learn
 
-_________________________________________________________________________________________________________________________________________________________________________
+______________________________________________________________________________________________________________________________________________________________________
 
 # Team Members
+
+Group Number:  182
 
 Name: Sabyasachi Purkayastha
 UID: 3035729708
@@ -20,17 +22,17 @@ The game consists of 3 levels. The three levels correspond to 3 topics of chemis
 
 ______________________________________________________________________________________________________________________________________________________________________
 
-## Things which will be implemented in our Program!
+# Things which will be implemented in our Program!
 
-# How does it implement rand():
+## How does it implement rand():
 
 We will try to implement a mini-lucky roll the dice within the education game. So while generating random numbers for the dice, we will rand() function to generate the number. If the guess of the user matches with the generated number, the user will gain energy points.  
 
-# How do we use data structures?
+## How do we use data structures?
 
 We will use arrays use to store answers to questions, scores of the user, health of the user!
 
-# How we are using files input and output
+## How we are using files input and output
 
 Output: We will be outputting questions, the player's health and score after each level, and player's report card and feedback after the game ends.
 Input: The answer that the player provides for each questions
