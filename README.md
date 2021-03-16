@@ -48,6 +48,9 @@ ________________________________________________________________________________
 * We will use arrays use to store answers to questions, scores of the user, and health of the user!
 * User status, name, health, scores will also be stored in the data structures.
 
+## Dynamic Memory Management:
+* Our game consists of an array that represents how many rolls of dice are available to the user at the start of the game. If three rolls are available, array= [1,1,1]. The size of this array is inputted by the user during game play. Maximum size is 8 while minimum is 3. The catch however is if user chooses greater number of rolls, more of his health decreases upon a wrong guess. So the size of the array is proportional to the decrease in health upon a wrong guess.
+
 ## Use Of File input/output:
  * All of the user data will be stored in a file.
  * Some of the game variables would be also written in files to maintain proper records of game choices and other implementation of game features.
