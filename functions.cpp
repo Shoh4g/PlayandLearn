@@ -3,7 +3,12 @@
 #include <iomanip>
 #include <time.h>
 #include <ctime>
-#include <Windows.h> //As you are writing for linux, change it into <Unistd.h>
+#ifdef _WIN32
+#include <Windows.h>  //However, program need sto be changed. Change system("clear") to system("cls") and use numbers in Sleep(1000) for 1 sec in windows
+#else                 // and sleep(1) for 1 sec in linux
+#include <unistd.h> //for windows, change it into <windows.h>
+#endif
+
 #include <string>
 
 #include "functions.h"   //creating Header files
@@ -13,12 +18,13 @@ using namespace std;
 
 // This function gives a typewriter effect to the output of the game
 //It uses sleep function to give out the cout output with delay!
-void typewriter( string str )
+void typewriter( string str, int time )
 {
     for ( int i = 0; str[i] != '\0'; i++ )
     {
         cout << str[i];
-        Sleep(50);
+	cout.flush();
+	usleep( time );
     }
 }
 
@@ -48,20 +54,20 @@ void diamond( char diamondCharacter, int m, int r)
             {
                 cout << setw( m - (3 * i ) + 1) << diamondCharacter;
                 cout << endl;
-                Sleep(500);
+                sleep(1);
             }
             else
             {
                 cout << setw( m - (3 * i )) << diamondCharacter << setw( ( 6 * i ) + 2 ) << diamondCharacter;
                 cout << endl;
-                Sleep(500);
+                sleep(1);
             }
         }
         else 
         {
             cout << setw( m - (3 * i )) << diamondCharacter << setw( ( 6 * i ) + 1 ) << " P.L.A.Y_A.N.D_L.E.A.R.N " << diamondCharacter;;
             cout << endl;
-            Sleep(500);            
+            sleep(1);            
         }
     }
     
@@ -71,13 +77,13 @@ void diamond( char diamondCharacter, int m, int r)
             {
                 cout << setw( m - (3 * i  ) + 1) << diamondCharacter;
                 cout << endl;
-                Sleep(500);
+                sleep(1);
             }
             else
             {
                 cout << setw( m - (3 * i )) << diamondCharacter << setw( ( 6 * i ) + 2 ) << diamondCharacter;
                 cout << endl;
-                Sleep(500);
+                sleep(1);
             }
     }
 }
@@ -104,53 +110,47 @@ void introduction()
     string description_14 = "Lastly, you will be asked to answer the questions in two ways!\n1- By typing in the mcq letter.\n2- By typing in the answer which won't have any options.\n";
     string description_15 = "If you enter unexpected values, the game might behave in unexpected ways :(\nIf game crashes, you can restart the program.\n";
 
-    system("cls");
+    system("clear"); // clear screen command for linux
     print_line_pattern( '=', 80 );
-    Sleep(1000);
+    sleep(1);
     diamond( '*', 40, 5 );
-    Sleep(1000);
+    sleep(1);
     print_line_pattern( '=', 80 );
-    Sleep(1000);
-    system("cls");
+    sleep(2);
+    system("clear");  //for windows use system("cls")
 
  
     string asking_player_name = "What should we call you?\n";
-    typewriter( asking_player_name );
+    typewriter( asking_player_name, 150000 );
     getline( cin, player_name);
 
-    typewriter( greetings );
-    typewriter ( player_name );
-    Sleep(50);
+    typewriter( greetings, 150000 );
+    typewriter ( player_name, 150000 );
+    sleep(1);
     cout <<"!\n";
-    Sleep(50);
+    sleep(1);
     print_line_pattern( '_', 80 );
-    Sleep( 500 );
-    typewriter( line_1 );
+    sleep( 1 );
+    typewriter( line_1, 150000 );
     print_line_pattern( '_', 80 );
-    Sleep( 500 );
-    typewriter( description_1 );
-    typewriter( description_2 );
-    typewriter( description_3 );
-    typewriter( description_4 );
-    typewriter( description_5 );
-    typewriter( description_6 );
-    typewriter( description_7 );
-    typewriter( description_8 );
-    typewriter( description_9 );
-    typewriter( description_10 );
-    typewriter( description_11 );
-    typewriter( description_12 );
-    typewriter( description_13 );
-    typewriter( description_14 );
-    typewriter( description_15 );
+    sleep( 1 );
+    typewriter( description_1, 150000 );
+    typewriter( description_2, 150000 );
+    typewriter( description_3, 150000 );
+    typewriter( description_4, 150000 );
+    typewriter( description_5, 150000 );
+    typewriter( description_6, 150000 );
+    typewriter( description_7, 150000 );
+    typewriter( description_8, 150000 );
+    typewriter( description_9, 150000 );
+    typewriter( description_10, 150000 );
+    typewriter( description_11, 150000 );
+    typewriter( description_12, 150000 );
+    typewriter( description_13, 150000 );
+    typewriter( description_14, 150000 );
+    typewriter( description_15, 150000 );
     print_line_pattern( '_', 80 );
-    Sleep( 500 );
-
-
-
-
-
-
+    sleep( 1 );
     
 }
 // int main()
