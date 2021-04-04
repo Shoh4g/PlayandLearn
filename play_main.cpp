@@ -20,5 +20,22 @@ using namespace std;
 int main()
 {
     introduction();
+    system("clear");
+
+    //creating dynamic memory to store the number of times healing can be done
+    string Dynamic_memory = "How many times you want an opportunity to heal! ( Choose between 3 - 8 times )";
+    int size; //getting size of the heal array
+    cin >> size;
+    int * heal = new int [size];   //creating dynamic memory
+    
+    //making all the array false so that it is clear that healing is not yet used! When healing
+    // will be used, the false be turned to true
+
+    for ( int i = 0; i < size; i++ )
+    {
+        heal[i] = false;
+    }
+
+    
     return 0;
 }
