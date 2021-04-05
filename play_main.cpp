@@ -102,7 +102,7 @@ void thermochemistry( int choice)
     string answer;
     if (choice == 1 )
     {
-        string correct_answer[20] = {"D", "A", "D", "B", "D", "A", "C", "A", "C", "A", "B", "D", "A", "B", "D", "D", "D", "A", "B", "D"} ;
+        string correct_answer[20] = {"D", "A", "D", "B", "D", "THERMOCHEMISTRY", "C", "J", "C", "A", "B", "EXOTHERMIC", "A", "B", "D", "D", "D", "GLASS CALORIMETER", "B", "D"} ;
         int count = 0; //To keep tract of questions
         ifstream read( "thermochemistry_easy.txt");
 
@@ -118,7 +118,7 @@ void thermochemistry( int choice)
             while ( line != "**")
             {
                 cout << line << endl;
-		getline( read, line );
+		        getline( read, line );
             }
             cin >> answer;
 
@@ -147,13 +147,101 @@ void thermochemistry( int choice)
 
 	read.close();
     }
-
     else if (choice == 2)
     {
+        string correct_answer[20] = {"STATE FUNCTIONS", "A", "A", "A", "C", "B", "C", "B", "A", "D", "D", "D", "C", "B", "A", "C", "GIBBS ENERGY", "A", "D", "A"} ;
+        int count = 0; //To keep tract of questions
+        ifstream read( "thermochemistry_medium.txt");
+
+        if ( read.fail() )
+        {
+            cout << "Error Opening the file.. OOP :(" << endl;
+            exit(1);
+        }
+
+        while ( !read.eof() )
+        {
+            getline( read, line );
+            while ( line != "**")
+            {
+                cout << line << endl;
+		        getline( read, line );
+            }
+            cin >> answer;
+
+            //converting into uppercase
+            answer = toUpper( answer );
+
+            //checking correctness of the asnwer
+
+            if ( answer == correct_answer[count])
+            {
+                game_status.score++;                
+            }
+            else
+            {
+                cout << "Wrong Answer!\n";
+                cout << "Correct Answer was " << correct_answer[count] << endl;
+                game_status.health = game_status.health - 2;
+            }
+            count++;
+            data_storing( game_status.health, game_status.heals_left, game_status.score );
+	    if ( count == 20 )
+	    {
+	        break; // breaking the loop
+            }
+        }
+
+	read.close();
 
     }
     else if ( choice == 3)
     {
+        string correct_answer[20] = {"E", "A", "+30.0 J", "C", "E", "D", "B", "D", "A", "-581.0 KJ", "C", "A", "A", "A", "E", "-140.0 KJ", "C", "A", "D", "D"} ;
+        int count = 0; //To keep tract of questions
+        ifstream read( "thermochemistry_hard.txt");
+
+        if ( read.fail() )
+        {
+            cout << "Error Opening the file.. OOP :(" << endl;
+            exit(1);
+        }
+
+        while ( !read.eof() )
+        {
+            getline( read, line );
+            while ( line != "**")
+            {
+                cout << line << endl;
+		        getline( read, line );
+            }
+            cin >> answer;
+
+            //converting into uppercase
+            answer = toUpper( answer );
+
+            //checking correctness of the asnwer
+
+            if ( answer == correct_answer[count])
+            {
+                game_status.score++;                
+            }
+            else
+            {
+                cout << "Wrong Answer!\n";
+                cout << "Correct Answer was " << correct_answer[count] << endl;
+                game_status.health = game_status.health - 2;
+            }
+            count++;
+            data_storing( game_status.health, game_status.heals_left, game_status.score );
+	    if ( count == 20 )
+	    {
+	        break; // breaking the loop
+            }
+        }
+
+	read.close();
+
 
     }
 }

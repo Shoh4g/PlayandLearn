@@ -35,10 +35,7 @@
 **
 6.
     ________________ is study about energy of a chemical system
-    (a) Thermochemistry
-    (b) Thermodynamics
-    (c) Chemical kinetics
-    (d) Stoichiometry
+    (Type you answer. If more than 1 word, add space)
 **
 7.
     The environment in which a system is studied is
@@ -49,10 +46,7 @@
 **
 8.
     Unit of heat in the SI system is
-    (a) J
-    (b) KCaL
-    (c) Cal
-    (d) GJ
+    (Type your answer. Add space if there is more than 1 word)
 **
 9.
     Anything which depends upon the initial and final state of a system is
@@ -77,10 +71,7 @@
 **
 12.
     Reaction in which heat evolves is called
-    (a) Endothermic
-    (b) Spontaneous
-    (c) Non-spontaneous
-    (d) Exothermic
+    (Type your answer and add space if there are two or more words)
 **
 13.
     CuSO4 + Zn>>ZnSO4+Cu is
@@ -119,10 +110,7 @@
 **
 18.
     Enthalpy of a reaction can be measured by
-    (a) Glass calorimeter
-    (b) Manometer
-    (c) Barometer
-    (d) Thermometer
+    (Type your Answer  add space if there are two words)
 **
 19.
     Enthalpy of combustion for food fuel and other compounds can be measured accurately by
