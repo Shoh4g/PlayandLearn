@@ -17,6 +17,22 @@
 
 using namespace std;
 
+//A function to convert everything to uppercase
+string toUpper( string str )
+{
+    for ( int i = 0; i < str.length(), i++ )
+    {
+        char y = str[i];
+        if (y >= 'a' && y <= 'z')
+        {
+            str[i] = ( ( y - 'a') + 65 );
+        }
+    }
+
+    return str;
+} 
+
+
 // This function gives a typewriter effect to the output of the game
 //It uses sleep function to give out the cout output with delay!
 void typewriter( string str, int time )
@@ -158,12 +174,4 @@ string introduction()
     return player_name;
     
 }
-// int main()
-// {
-//     string player_name;
-//     getline( cin, player_name);
-//     typewriter( player_name );
-//     cout << endl;
-//     typewriter( " How are you ?");
-//     return 0;
-// }
+

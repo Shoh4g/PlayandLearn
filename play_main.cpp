@@ -98,23 +98,46 @@ void environmentalchemistry( int choice)
 void thermochemistry( int choice)
 {
     string line;
+    string answer;
     if (choice == 1 )
     {
+        string correct_answer[20] = {"D", "A", "D", "B", "D", "A", "C", "A", "C", "A", "B", "D", "A", "B", "D", "D", "D", "A", "B", "D"} ;
+        int count = 0; 
         ifstream read( "thermochemistry_easy.txt");
+
         if ( read.fail() )
         {
             cout << "Error Opening the file.. OOP :(" << endl;
             exit(1);
         }
 
-        while (!read.eof() )
+        while ( !read.eof() )
         {
             getline( read, line );
             while ( line != "**")
             {
                 cout << line << endl;
-		getline( read, line );
+		        getline( read, line );
             }
+            cin >> answer;
+
+            //converting into uppercase
+            answer = toUpper( answer );
+
+            //checking correctness of the asnwer
+
+            if ( answer == correct_answer[count])
+            {
+                game_status.score++;                
+            }
+            else
+            {
+                cout << "Wrong Answer!\n";
+                cout << "Correct Answer was " << correct_answer[count] << endl;
+                game_status.health = game_status.health - 2;
+            }
+            count++;
+            data_storing( game_status.health, game_status.heals, game_status.score );
         }
     }
 
