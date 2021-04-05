@@ -12,6 +12,7 @@
 #include <string>
 
 #include "functions.h"   //creating Header files
+#include "barrier.h"
 
 
 using namespace std;
@@ -89,7 +90,8 @@ void diamond( char diamondCharacter, int m, int r)
 }
 
 // This function contains the main introduction of the game!
-void introduction()
+//It returnss name of the player
+string introduction()
 {
     string player_name;   
     string greetings  = "Greetings ";
@@ -151,6 +153,9 @@ void introduction()
     typewriter( description_15, 150000 );
     print_line_pattern( '_', 80 );
     sleep( 1 );
+    barrier();
+
+    return player_name;
     
 }
 // int main()
