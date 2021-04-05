@@ -18,6 +18,9 @@
 
 using namespace std;
 
+
+void typewriter( string, int );
+
 string player_name;
 
 

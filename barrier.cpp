@@ -5,6 +5,7 @@
 
 using namespace std;
 
+void typewriter( string, int );
 
 //This function acts as a barrier between different parts of the game allowing easy readibility
 void barrier()
