@@ -5,7 +5,7 @@
 #include <string>
 using namespace std;
 
-void introduction ();
+string introduction ();
 
 void print_line_pattern( char character_to_print, int times );
 
