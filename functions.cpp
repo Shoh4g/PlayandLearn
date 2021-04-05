@@ -20,7 +20,7 @@ using namespace std;
 //A function to convert everything to uppercase
 string toUpper( string str )
 {
-    for ( int i = 0; i < str.length(), i++ )
+    for ( int i = 0; i < str.length(); i++ )
     {
         char y = str[i];
         if (y >= 'a' && y <= 'z')

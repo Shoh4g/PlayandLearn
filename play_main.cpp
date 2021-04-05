@@ -20,6 +20,7 @@ using namespace std;
 
 
 void typewriter( string, int );
+string toUpper( string str );
 
 string player_name;
 
@@ -102,7 +103,7 @@ void thermochemistry( int choice)
     if (choice == 1 )
     {
         string correct_answer[20] = {"D", "A", "D", "B", "D", "A", "C", "A", "C", "A", "B", "D", "A", "B", "D", "D", "D", "A", "B", "D"} ;
-        int count = 0; 
+        int count = 0; //To keep tract of questions
         ifstream read( "thermochemistry_easy.txt");
 
         if ( read.fail() )
@@ -117,7 +118,7 @@ void thermochemistry( int choice)
             while ( line != "**")
             {
                 cout << line << endl;
-		        getline( read, line );
+		getline( read, line );
             }
             cin >> answer;
 
@@ -137,8 +138,14 @@ void thermochemistry( int choice)
                 game_status.health = game_status.health - 2;
             }
             count++;
-            data_storing( game_status.health, game_status.heals, game_status.score );
+            data_storing( game_status.health, game_status.heals_left, game_status.score );
+	    if ( count == 20 )
+	    {
+	        break; // breaking the loop
+            }
         }
+
+	read.close();
     }
 
     else if (choice == 2)
