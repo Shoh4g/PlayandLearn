@@ -109,10 +109,11 @@ void thermochemistry( int choice)
 
         while (!read.eof() )
         {
-            getline(read, line);
+            getline( read, line );
             while ( line != "**")
             {
                 cout << line << endl;
+		getline( read, line );
             }
         }
     }
@@ -136,7 +137,7 @@ void chemistry_topics( int choice)
  {
     int  difficulty_level;
     string level_selection = "What difficulty level you want?\n->Press 1 for Easy\n->Press 2 for Medium\n-> Press 3 for Hard\n";
-    typewriter(level_selection);
+    typewriter(level_selection, 150000);
     cin >> difficulty_level;
 
     if (choice == 1 )
@@ -160,7 +161,7 @@ int main()
     //creating dynamic memory to store the number of times healing can be done
     string Dynamic_memory = "How many times you want an opportunity to heal! ( Choose between 3 - 8 times )\n";
     int size; //getting size of the heal array
-    typewriter(Dynamic_memory);
+    typewriter(Dynamic_memory, 150000);
     cin >> size;
     int * heal = new int [size];   //creating dynamic memory
     
@@ -180,8 +181,8 @@ int main()
     int topic;
     string topic_selection = "What topics you want to practice and test!\n->Press 1 for Electro-Chemistry\n->Press 2 for Environmental Chemistry\n";
     string topic_selection2 = "-> Press 3 for Thermo-Chemistry\n";
-    typewriter(topic_selection);
-    typewriter(topic_selection2);
+    typewriter(topic_selection, 150000);
+    typewriter(topic_selection2, 150000);
     cin >> topic;
 
     chemistry_topics( topic );

@@ -11,7 +11,7 @@ void print_line_pattern( char character_to_print, int times );
 
 void diamond( char diamondCharacter, int m, int r);
 
-void typewriter( string str );
+void typewriter( string str, int time );
 
 #endif
 
