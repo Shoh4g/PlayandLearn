@@ -17,3 +17,23 @@ void barrier()
     cin.get();
     system("clear");
 }
+
+
+//Added for providing quit function as well
+bool barrier2()
+{
+    char s;
+    cout << endl;
+    string line = "Please press Enter to continue..... or 'q' to quit\n";
+    typewriter(line, 150000);
+    cin.get(s);
+    system("clear");
+    if (s == 'q' || s == 'Q' )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
