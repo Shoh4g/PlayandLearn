@@ -1,6 +1,6 @@
 1.
     Most of thermodynamic parameters are
-    (Type your Answer  add space if there are two words)
+    (Type you answer. If more than 1 word, add '-' between each word .e.g. this-is-how)
 **
 2.
     ΔH of a system can be calculated by which of the following relationship
@@ -110,7 +110,7 @@
 **
 17.
     At constant pressure and temperature, the direction of any chemical reaction is one where the...... decrease.
-    (Type your Answer  add space if there are two words)
+    (Type you answer. If more than 1 word, add '-' between each word .e.g. this-is-how)
 **
 18.
     Entropy decreases during:
