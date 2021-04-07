@@ -26,6 +26,18 @@ void typewriter( string, int );
 string toUpper( string str );
 bool barrier2();
 bool healer();
+void grow_array( string * & array, int & size );
+bool heal_deduction_checker( int * & heal, int size );
+void data_storing( int health, int heals, int score );
+void show_status();
+void game_play( string correct_answer[20], string file_name, int * & heal, int size, string * & report, int & arraysize, int & index );
+void periodicity ( int choice, int * & heal, int size, string * & report, int & arraysize, int & index );
+void electrochemistry( int choice, int * & heal, int size, string * & report, int & arraysize, int & index );
+void thermochemistry( int choice, int * & heal, int size, string * & report, int & arraysize, int & index );
+void chemistry_topics( int choice, int * &heal, int size, string * & report, int & arraysize, int & index );
+string percentage_calculator( int count, double correct );
+void topic_report( string filename,  int count, double correct );
+void final_report( string * & report, int index );
 
 
 // creating global variables that are being used in whole program
@@ -488,7 +500,7 @@ void chemistry_topics( int choice, int * &heal, int size, string * & report, int
     cin >> difficulty_level;
 
     // Checking if the key enetered is right or not
-    while ( difficulty_level != 1 || difficulty_level != 2 || difficulty_level != 3 )
+    while ( difficulty_level != 1 && difficulty_level != 2 && difficulty_level != 3 )
     {
         cout << "You entered the wrong key!\n";
         typewriter( level_selection, 150000 );
@@ -654,7 +666,7 @@ int main()
         cin >> topic;
 
         // Checking if the key enetered is right or not
-        while ( topic != 1 || topic != 2 || topic != 3 )
+        while ( topic != 1 && topic != 2 && topic != 3 )
         {
             cout << "You entered the wrong key!\n";
             typewriter( topic_selection, 150000 );
@@ -673,7 +685,7 @@ int main()
         cin >> continue_answer;
 
         // Checking if the key enetered is right or not
-        while ( continue_answer != "y" || continue_answer != "y" || continue_answer != "n" || continue_answer != "N" )
+        while ( continue_answer != "y" && continue_answer != "y" && continue_answer != "n" && continue_answer != "N" )
         {
             cout << "You entered the wrong key!\n";
             typewriter( continue_game, 150000 );
