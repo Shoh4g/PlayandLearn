@@ -150,7 +150,7 @@ string introduction()
     string description_10 = "if your guess is wrong, no health points will be deducted.\nHowever, after then every next time, your guess is wrong, health points";
     string description_11 = " will be deducted from your current health points!\nThe amount of health points deducted depends on your choice of number of rolls.\n";
     string description_12 = "The deduction in health is equal to (choice of rolls*1).\nSo use healing CAREFULLY!\nAt the end of each topic/level, you can quit the game by pressing 'q' or move on another ";
-    string description_13 = "topic/level by pressing 'ENTER'.At the end of each topic, your score will be shown.At the end of the game or when you quit, your final report card will be displayed.\n";
+    string description_13 = "topic/level by pressing 'ENTER'.\nAt the end of each topic, your score will be shown.At the end of the game or when you quit, your final report card will be displayed.\n";
     string description_14 = "Lastly, you will be asked to answer the questions in two ways!\n1- By typing in the mcq letter.\n2- By typing in the answer which won't have any options.\n";
     string description_15 = "If you enter unexpected values, the game might behave in unexpected ways :(\nIf game crashes, you can restart the program.\n";
 

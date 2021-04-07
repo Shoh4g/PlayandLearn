@@ -35,15 +35,26 @@ bool barrier2()
 {
     char s;
     cout << endl;
-    string line = "Please press Enter to continue..... or 'q' or any key to quit except enter\n";
-    typewriter(line, 150000);
+    string line = "Please press c to continue..... or 'q' to quit\n";
+    typewriter( line, 150000 );
 
-    if ( cin.get() == '\n' )   // This condition will determine whether to continue or quite
+    cin >> s;  // get user's answer
+
+    // This is to check if the entered key is right or not
+    while ( s != 'c' || s != 'C' || s != 'q' || s != 'Q')
+    {
+        cout << "You entered the wrong key!\n";
+        typewriter( line, 150000 );
+        cin >> s;
+    }
+
+
+    if ( s == 'c' || s == 'C')   // This condition will determine whether to continue or quite
     {
         system("clear");
-        return false;
+        return false;   // This condition tells to continue the game
     }
-    else
+    else if ( s == 'q' || s == 'Q')
     {
         system("clear");
         return true;

@@ -19,7 +19,15 @@ bool healer()
     cout << endl;
     string line = "Do you want to heal or not (Y/N)\n";
     typewriter( line, 150000 );
-    cin.get(s);
+    cin >> s;
+
+    // Checking if the key enetered is right or not
+    while ( s != 'y' || s != 'y' || s != 'n' || s != 'N' )
+    {
+        cout << "You entered the wrong key!\n";
+        typewriter( line, 150000 );
+        cin >> s;
+    }
 
     // If y or Y is pressed, it tells that healing is needed
     if ( s == 'Y' || s == 'y' )
