@@ -1,9 +1,11 @@
 // The main file of the Program/Project
+
 #include <iostream>
 #include <iomanip>
 #include <time.h>
 #include <ctime>
 #include <fstream>
+#include <string>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -11,20 +13,22 @@
 #include <unistd.h> //As you are writing for windows, change it into <windows.h>
 #endif
 
-#include <string>
-
-#include "functions.h"   //creating Header files
+// Adding programmer created header files
+#include "functions.h"  
 #include "barrier.h"
 #include "func2.h"
 
 using namespace std;
 
 
+// Creating function declarations
 void typewriter( string, int );
 string toUpper( string str );
 bool barrier2();
 bool healer();
 
+
+// creating global variables that are being used in whole program
 string player_name;
 bool flag = false, healing, dice_guess = false, checker;    //added to detrmine whether to quit the game or not
 
@@ -43,14 +47,17 @@ struct data game_status;   //making game_status a global variable to be used in 
 
 // will decide whether to deduct health for using healing or not
 //returns true if health needs to be deducted
-bool heal_deduction_checker( int * & heal, int size)
+bool heal_deduction_checker( int * & heal, int size )
 {
-    int num = -1;
+    int num = -1;  // Initialising num to -1
+
+    // A for loop which checks whether elements of heal array are false or positive
+    // false means heal is not used
     for ( int i = 0; i < size; i++ )
     {
         if ( heal[i] == false )
         {
-            heal[i] = true;
+            heal[i] = true;   // if not used, use it and convert it into
             num = i;
             break;
         }
@@ -58,755 +65,931 @@ bool heal_deduction_checker( int * & heal, int size)
 
     if ( num < 2 )
     {
-        return false;
+        return false;   // It returns false meaning health should not be deducted before 2 heals are done
     }
     else
     {
         return true;
     }
+
 }
 
-//This functions stors the name and status of the game in the file to be retrieved later
-void data_storing( int health, int heals, int score)
-{
-    ofstream getdata("status.txt");
 
-    if (getdata.fail())
+
+//This functions stores the name and status of the game in the file to be retrieved later
+void data_storing( int health, int heals, int score )
+{
+    // Opens or creates the status.txt file
+    ofstream getdata( "status.txt" );
+
+    //checking error in the opening of the file
+    if ( getdata.fail() )
     {
         cout << "Error in opening status file! OOPS :(" << endl;
         exit(1);
     }
 
+    // assigning values to various variables of struct data structure
     game_status.name = player_name;
     game_status.health = health;
     game_status.heals_left = heals;
     game_status.score = score;
 
+    // sends data to to the file to be retrived later
     getdata << "Name: " << player_name << endl << "Current Health: " << health << endl;
     getdata << "Heals Left: " << heals << endl << "Current Score: " << score << endl;
 
-    getdata.close();
+    getdata.close();   // closes the file
 }
 
+
+
+void game_play( string correct_answer[20], string file_name, int * & heal, int size  )
+{
+    string answer;   // To store the anser of the user
+    string line;    // To allowing lines from the file to be read
+
+    int count = 0;                          //To keep track of questions and suggesting and comparing answers accordingly
+
+    ifstream read( file_name.c_str() );   //Opens the respecrive file
+
+    // CHecking error in the file
+    if ( read.fail() )
+    {
+        cout << "Error Opening the file.. OOP :(" << endl;
+        exit(1);
+    }
+
+    // A loop that reads the complete file
+    while ( !read.eof() )
+    {
+        getline( read, line );
+        while ( line != "**")   // "**" suggests one question is done in the file
+        {
+            cout << line << endl;
+	        getline( read, line );
+        }
+
+        cin >> answer;     // taking answers from the user
+
+
+        //converting into uppercase
+        answer = toUpper( answer );
+
+        //checking correctness of the asnwer
+
+        // To check if the answer is correct or not
+        if ( answer == correct_answer[count])
+        {
+            cout << " Yipeee!! Answer is Correct\n";
+            game_status.score++;                
+        }
+        else
+        {
+            cout << "Wrong Answer!\n";
+            cout << "Correct Answer was " << correct_answer[count] << endl;
+            game_status.health = game_status.health - 2;
+        }
+
+        count++;    // Increasing the count so that next question is asked
+
+        // Updating the scores in status.txt
+        data_storing( game_status.health, game_status.heals_left, game_status.score );
+        flag = barrier2();  // Asking if person wants to quit or to play... if flag becomes true quit the game
+
+        // Considering when to quit the game
+        if ( flag == true || game_status.health <= 0 )
+        {
+            if ( game_status.health <= 0 )
+            {
+                cout << " You have no health left :( Sorry You can't play more\n";
+            }
+            return;   // It returns to the choosing of the topic function
+        }
+
+        //asking for heals
+        if ( game_status.heals_left != 0 )   // If heals left are not zero
+        {
+            healing = healer();   // Calling the function and letting it know that whether to deduct points or not
+
+            if ( healing == true )   // Meaning healing is used by the user
+            {
+                game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
+
+                //checking if guess is matched or not
+                dice_guess = random_guess();
+
+                // if guess is true
+                if ( dice_guess ==  true )
+                {
+                    cout << "Your Guess is right! Yipee! You get 10 health points!!\n";
+                    game_status.health += 10;
+                }
+                else
+                {
+                    cout << " Your Guess is wrong :( Better Luck Next Time!\n";
+                    checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
+                    if ( checker == true )
+                    {
+                        cout << size * 1 << "health points are decreased from your health\n";
+                        game_status.health = game_status.health - (size * 1);
+                    }
+                }
+            }
+        }
+
+        if ( count == 20 )
+        {
+            break; // breaking the loop
+        }
+    }
+
+read.close();   // clsoing the file in the end
+
+}
+
+
+// The websites from where the questions are taken
 //https://mcqlearn.com/chemistry/g9/periodicity-and-properties-mcqs.php
 //https://mcqlearn.com/chemistry/g9/metals-mcqs.php
 //https://www.learninsta.com/mcq-questions-for-class-11-chemistry-chapter-3/
 //http://www.geekmcq.com/chemistry/periodic-classification-of-elements-and-periodicity/
-//converting electro-chemistry to periodicity and metals
+//This function gives questions to the player from the respective files according to his choice 
+// of difficulty level of the topic 'Periodicity'
+// It takes choice as an argument to know what difficulty level a person wants, heal array to know about healing and size of the dynamic array
 void periodicity ( int choice, int * & heal, int size )
 {
-    string line;
-    string answer;
-    if (choice == 1 )
+  //  string line;      // To store the line in the file which is output on the screen
+   // string answer;   // To store answer of the user
+
+    // Choice for easy level
+    if ( choice == 1 )
     {
-        string correct_answer[20] = {"C", "B", "IONIZATION-ENERGY", "B", "INCREASES", "B", "NOBLE-METALS", "C", "B", "A", "C", "33", "B", "B", "A", "A", "C", "IODINE", "D", "D"} ;
-        int count = 0; //To keep track of questions
-        ifstream read( "periodicity_easy.txt");
+        string correct_answer[20] = { "C", "B", "IONIZATION-ENERGY", "B", "INCREASES", "B", "NOBLE-METALS", "C", "B", "A", "C", "33", "B", "B", "A", "A", "C", "IODINE", "D", "D" } ;
+        string file_name = "periodicity_easy.txt";
+        game_play( correct_answer, file_name, heal, size );
+    //     // An array to store actual answers
+    //     string correct_answer[20] = { "C", "B", "IONIZATION-ENERGY", "B", "INCREASES", "B", "NOBLE-METALS", "C", "B", "A", "C", "33", "B", "B", "A", "A", "C", "IODINE", "D", "D" } ;
+    //     int count = 0;                          //To keep track of questions and suggesting and comparing answers accordingly
 
-        if ( read.fail() )
-        {
-            cout << "Error Opening the file.. OOP :(" << endl;
-            exit(1);
-        }
+    //     ifstream read( "periodicity_easy.txt" );   //Opens the respecrive file
 
-        while ( !read.eof() )
-        {
-            getline( read, line );
-            while ( line != "**")
-            {
-                cout << line << endl;
-		        getline( read, line );
-            }
+    //     // CHecking error in the file
+    //     if ( read.fail() )
+    //     {
+    //         cout << "Error Opening the file.. OOP :(" << endl;
+    //         exit(1);
+    //     }
 
-            cin >> answer;
+    //     // A loop that reads the complete file
+    //     while ( !read.eof() )
+    //     {
+    //         getline( read, line );
+    //         while ( line != "**")   // "**" suggests one question is done in the file
+    //         {
+    //             cout << line << endl;
+	// 	        getline( read, line );
+    //         }
+
+    //         cin >> answer;     // taking answers from the user
 
 
-            //converting into uppercase
-            answer = toUpper( answer );
+    //         //converting into uppercase
+    //         answer = toUpper( answer );
 
-            //checking correctness of the asnwer
+    //         //checking correctness of the asnwer
 
-            if ( answer == correct_answer[count])
-            {
-                game_status.score++;                
-            }
-            else
-            {
-                cout << "Wrong Answer!\n";
-                cout << "Correct Answer was " << correct_answer[count] << endl;
-                game_status.health = game_status.health - 2;
-            }
-            count++;
-            data_storing( game_status.health, game_status.heals_left, game_status.score );
-            flag = barrier2();  // if flag becomes true quit the game
-            if (flag == true || game_status.health <= 0 )
-            {
-                return;
-            }
-            //asking for heals
-            if ( game_status.heals_left != 0 )
-            {
-                healing = healer();
-                if ( healing == true )
-                {
-                    game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
-                    //checking if guess is matched or not
-                    dice_guess = random_guess();
-                    // if guess is true
-                    if ( dice_guess ==  true )
-                    {
-                        game_status.health += 10;
-                    }
-                    else
-                    {
-                        checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
-                        if ( checker == true )
-                        {
-                            game_status.health = game_status.health - (size * 1);
-                        }
-                    }
-                }
-            }
+    //         // To check if the answer is correct or not
+    //         if ( answer == correct_answer[count])
+    //         {
+    //             cout << " Yipeee!! Answer is Correct\n";
+    //             game_status.score++;                
+    //         }
+    //         else
+    //         {
+    //             cout << "Wrong Answer!\n";
+    //             cout << "Correct Answer was " << correct_answer[count] << endl;
+    //             game_status.health = game_status.health - 2;
+    //         }
 
-	        if ( count == 20 )
-	        {
-	            break; // breaking the loop
-            }
-        }
+    //         count++;    // Increasing the count so that next question is asked
 
-	read.close();
+    //         // Updating the scores in status.txt
+    //         data_storing( game_status.health, game_status.heals_left, game_status.score );
+    //         flag = barrier2();  // Asking if person wants to quit or to play... if flag becomes true quit the game
+
+    //         // Considering when to quit the game
+    //         if ( flag == true || game_status.health <= 0 )
+    //         {
+    //             if ( game_status.health <= 0 )
+    //             {
+    //                 cout << " You have no health left :( Sorry You can't play more\n";
+    //             }
+    //             return;   // It returns to the choosing of the topic function
+    //         }
+
+    //         //asking for heals
+    //         if ( game_status.heals_left != 0 )   // If heals left are not zero
+    //         {
+    //             healing = healer();   // Calling the function and letting it know that whether to deduct points or not
+
+    //             if ( healing == true )   // Meaning healing is used by the user
+    //             {
+    //                 game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
+
+    //                 //checking if guess is matched or not
+    //                 dice_guess = random_guess();
+
+    //                 // if guess is true
+    //                 if ( dice_guess ==  true )
+    //                 {
+    //                     cout << "Your Guess is right! Yipee! You get 10 health points!!\n";
+    //                     game_status.health += 10;
+    //                 }
+    //                 else
+    //                 {
+    //                     cout << " Your Guess is wrong :( Better Luck Next Time!\n";
+    //                     checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
+    //                     if ( checker == true )
+    //                     {
+    //                         cout << size * 1 << "health points are decreased from your health\n";
+    //                         game_status.health = game_status.health - (size * 1);
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+	//         if ( count == 20 )
+	//         {
+	//             break; // breaking the loop
+    //         }
+    //     }
+
+	// read.close();   // clsoing the file in the end
     }
     else if (choice == 2)
     {
         string correct_answer[20] = {"INCREASES", "D", "C", "B", "C", "18", "B", "B", "D", "C", "A", "2", "D", "6", "C", "D", "ACIDIC", "C", "B", "B"} ;
-        int count = 0; //To keep tract of questions
-        ifstream read( "periodicity_medium.txt");
+        string file_name = "periodicity_medium.txt";
+        game_play( correct_answer, file_name, heal, size );
+    //     string correct_answer[20] = {"INCREASES", "D", "C", "B", "C", "18", "B", "B", "D", "C", "A", "2", "D", "6", "C", "D", "ACIDIC", "C", "B", "B"} ;
+    //     int count = 0; //To keep tract of questions
+    //     ifstream read( "periodicity_medium.txt");
 
-        if ( read.fail() )
-        {
-            cout << "Error Opening the file.. OOP :(" << endl;
-            exit(1);
-        }
+    //     if ( read.fail() )
+    //     {
+    //         cout << "Error Opening the file.. OOP :(" << endl;
+    //         exit(1);
+    //     }
 
-        while ( !read.eof() )
-        {
-            getline( read, line );
-            while ( line != "**")
-            {
-                cout << line << endl;
-		        getline( read, line );
-            }
-            cin >> answer;
+    //     while ( !read.eof() )
+    //     {
+    //         getline( read, line );
+    //         while ( line != "**")
+    //         {
+    //             cout << line << endl;
+	// 	        getline( read, line );
+    //         }
+    //         cin >> answer;
 
-            //converting into uppercase
-            answer = toUpper( answer );
+    //         //converting into uppercase
+    //         answer = toUpper( answer );
 
-            //checking correctness of the asnwer
+    //         //checking correctness of the asnwer
 
-            if ( answer == correct_answer[count])
-            {
-                game_status.score++;                
-            }
-            else
-            {
-                cout << "Wrong Answer!\n";
-                cout << "Correct Answer was " << correct_answer[count] << endl;
-                game_status.health = game_status.health - 2;
-            }
-            count++;
-            data_storing( game_status.health, game_status.heals_left, game_status.score );
-            flag = barrier2();  // if flag becomes true quit the game
+    //         if ( answer == correct_answer[count])
+    //         {
+    //             game_status.score++;                
+    //         }
+    //         else
+    //         {
+    //             cout << "Wrong Answer!\n";
+    //             cout << "Correct Answer was " << correct_answer[count] << endl;
+    //             game_status.health = game_status.health - 2;
+    //         }
+    //         count++;
+    //         data_storing( game_status.health, game_status.heals_left, game_status.score );
+    //         flag = barrier2();  // if flag becomes true quit the game
 
-            if (flag == true || game_status.health <= 0 )
-            {
-                return;
-            }
-            //asking for heals
-            if ( game_status.heals_left != 0 )
-            {
-                healing = healer();
-                if ( healing == true )
-                {
-                    game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
-                    //checking if guess is matched or not
-                    dice_guess = random_guess();
-                    // if guess is true
-                    if ( dice_guess ==  true )
-                    {
-                        game_status.health += 10;
-                    }
-                    else
-                    {
-                        checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
-                        if ( checker == true )
-                        {
-                            game_status.health = game_status.health - (size * 1);
-                        }
-                    }
-                }
-            }
+    //         if (flag == true || game_status.health <= 0 )
+    //         {
+    //             return;
+    //         }
+    //         //asking for heals
+    //         if ( game_status.heals_left != 0 )
+    //         {
+    //             healing = healer();
+    //             if ( healing == true )
+    //             {
+    //                 game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
+    //                 //checking if guess is matched or not
+    //                 dice_guess = random_guess();
+    //                 // if guess is true
+    //                 if ( dice_guess ==  true )
+    //                 {
+    //                     game_status.health += 10;
+    //                 }
+    //                 else
+    //                 {
+    //                     checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
+    //                     if ( checker == true )
+    //                     {
+    //                         game_status.health = game_status.health - (size * 1);
+    //                     }
+    //                 }
+    //             }
+    //         }
 
-            if ( count == 20 )
-            {
-                break; // breaking the loop
-            }
-        }
+    //         if ( count == 20 )
+    //         {
+    //             break; // breaking the loop
+    //         }
+    //     }
 
-	read.close();
+	// read.close();
 
     }
     else if ( choice == 3)
     {
         string correct_answer[20] = {"C", "DECREASES", "A", "C", "A", "C", "B", "B", "4", "D", "C", "ISOTOPES", "C", "B", "A", "B", "C", "ENDOTHERMIC", "A", "C"} ;
-        int count = 0; //To keep tract of questions
-        ifstream read( "periodicity_hard.txt");
+        string file_name = "periodicity_hard.txt";
+        game_play( correct_answer, file_name, heal, size );
+    //     string correct_answer[20] = {"C", "DECREASES", "A", "C", "A", "C", "B", "B", "4", "D", "C", "ISOTOPES", "C", "B", "A", "B", "C", "ENDOTHERMIC", "A", "C"} ;
+    //     int count = 0; //To keep tract of questions
+    //     ifstream read( "periodicity_hard.txt");
 
-        if ( read.fail() )
-        {
-            cout << "Error Opening the file.. OOP :(" << endl;
-            exit(1);
-        }
+    //     if ( read.fail() )
+    //     {
+    //         cout << "Error Opening the file.. OOP :(" << endl;
+    //         exit(1);
+    //     }
 
-        while ( !read.eof() )
-        {
-            getline( read, line );
-            while ( line != "**")
-            {
-                cout << line << endl;
-		        getline( read, line );
-            }
-            cin >> answer;
+    //     while ( !read.eof() )
+    //     {
+    //         getline( read, line );
+    //         while ( line != "**")
+    //         {
+    //             cout << line << endl;
+	// 	        getline( read, line );
+    //         }
+    //         cin >> answer;
 
-            //converting into uppercase
-            answer = toUpper( answer );
+    //         //converting into uppercase
+    //         answer = toUpper( answer );
 
-            //checking correctness of the asnwer
+    //         //checking correctness of the asnwer
 
-            if ( answer == correct_answer[count])
-            {
-                game_status.score++;                
-            }
-            else
-            {
-                cout << "Wrong Answer!\n";
-                cout << "Correct Answer was " << correct_answer[count] << endl;
-                game_status.health = game_status.health - 2;
-            }
-            count++;
-            data_storing( game_status.health, game_status.heals_left, game_status.score );
-            flag = barrier2();  // if flag becomes true quit the game
+    //         if ( answer == correct_answer[count])
+    //         {
+    //             game_status.score++;                
+    //         }
+    //         else
+    //         {
+    //             cout << "Wrong Answer!\n";
+    //             cout << "Correct Answer was " << correct_answer[count] << endl;
+    //             game_status.health = game_status.health - 2;
+    //         }
+    //         count++;
+    //         data_storing( game_status.health, game_status.heals_left, game_status.score );
+    //         flag = barrier2();  // if flag becomes true quit the game
 
-            if (flag == true || game_status.health <= 0 )
-            {
-                return;
-            }
-            //asking for heals
-            if ( game_status.heals_left != 0 )
-            {
-                healing = healer();
-                if ( healing == true )
-                {
-                    game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
-                    //checking if guess is matched or not
-                    dice_guess = random_guess();
-                    // if guess is true
-                    if ( dice_guess ==  true )
-                    {
-                        game_status.health += 10;
-                    }
-                    else
-                    {
-                        checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
-                        if ( checker == true )
-                        {
-                            game_status.health = game_status.health - (size * 1);
-                        }
-                    }
-                }
-            }
+    //         if (flag == true || game_status.health <= 0 )
+    //         {
+    //             return;
+    //         }
+    //         //asking for heals
+    //         if ( game_status.heals_left != 0 )
+    //         {
+    //             healing = healer();
+    //             if ( healing == true )
+    //             {
+    //                 game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
+    //                 //checking if guess is matched or not
+    //                 dice_guess = random_guess();
+    //                 // if guess is true
+    //                 if ( dice_guess ==  true )
+    //                 {
+    //                     game_status.health += 10;
+    //                 }
+    //                 else
+    //                 {
+    //                     checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
+    //                     if ( checker == true )
+    //                     {
+    //                         game_status.health = game_status.health - (size * 1);
+    //                     }
+    //                 }
+    //             }
+    //         }
 
-            if ( count == 20 )
-            {
-                break; // breaking the loop
-            }
-        }
+    //         if ( count == 20 )
+    //         {
+    //             break; // breaking the loop
+    //         }
+    //     }
 
-	read.close();
+	// read.close();
 
 
-    }
+     }
 }
 
 
+// Questions are taken from the followinhg websites
 //https://mcqlearn.com/grade9/chemistry/electrochemistry-multiple-choice-questions-answers.php?page=4
 //https://www.chem.tamu.edu/class/fyp/mcquest/ch21.html
 // https://www.learncbse.in/chemistry-mcqs-for-class-12-with-answers-chapter-3/
 // http://www.geekmcq.com/chemistry/electrochemistry/
+//This function gives questions to the player from the respective files according to his choice 
+// of difficulty level of the topic 'Electrochemistry'
+// It takes choice as an argument to know what difficulty level a person wants, heal array to know about healing and size of the dynamic array
 void electrochemistry( int choice, int * & heal, int size)
 {
-    string line;
-    string answer;
+ //   string line;
+ //   string answer;
     if (choice == 1 )
     {
         string correct_answer[20] = {"REDUCTION", "B", "D", "B", "C", "OXIDATION", "B", "OXIDIZED", "GRAPHITE", "B", "A", "C", "B", "D", "CHEMICAL-ENERGY", "A", "ELECTROPLATING", "C", "A", "0"} ;
-        int count = 0; //To keep tract of questions
-        ifstream read( "electrochemistry_easy.txt");
+        string file_name = "electrochemistry_easy.txt";
+        game_play( correct_answer, file_name, heal, size );
+    //     string correct_answer[20] = {"REDUCTION", "B", "D", "B", "C", "OXIDATION", "B", "OXIDIZED", "GRAPHITE", "B", "A", "C", "B", "D", "CHEMICAL-ENERGY", "A", "ELECTROPLATING", "C", "A", "0"} ;
+    //     int count = 0; //To keep tract of questions
+    //     ifstream read( "electrochemistry_easy.txt");
 
-        if ( read.fail() )
-        {
-            cout << "Error Opening the file.. OOP :(" << endl;
-            exit(1);
-        }
+    //     if ( read.fail() )
+    //     {
+    //         cout << "Error Opening the file.. OOP :(" << endl;
+    //         exit(1);
+    //     }
 
-        while ( !read.eof() )
-        {
-            getline( read, line );
-            while ( line != "**")
-            {
-                cout << line << endl;
-		        getline( read, line );
-            }
-            cin >> answer;
+    //     while ( !read.eof() )
+    //     {
+    //         getline( read, line );
+    //         while ( line != "**")
+    //         {
+    //             cout << line << endl;
+	// 	        getline( read, line );
+    //         }
+    //         cin >> answer;
 
-            //converting into uppercase
-            answer = toUpper( answer );
+    //         //converting into uppercase
+    //         answer = toUpper( answer );
 
-            //checking correctness of the asnwer
+    //         //checking correctness of the asnwer
 
-            if ( answer == correct_answer[count])
-            {
-                game_status.score++;                
-            }
-            else
-            {
-                cout << "Wrong Answer!\n";
-                cout << "Correct Answer was " << correct_answer[count] << endl;
-                game_status.health = game_status.health - 2;
-            }
-            count++;
-            data_storing( game_status.health, game_status.heals_left, game_status.score );
-            flag = barrier2();  // if flag becomes true quit the game
-            if (flag == true )
-            {
-                return;
-            }
-            if ( count == 20 )
-            {
-                break; // breaking the loop
-            }
-        }
+    //         if ( answer == correct_answer[count])
+    //         {
+    //             game_status.score++;                
+    //         }
+    //         else
+    //         {
+    //             cout << "Wrong Answer!\n";
+    //             cout << "Correct Answer was " << correct_answer[count] << endl;
+    //             game_status.health = game_status.health - 2;
+    //         }
+    //         count++;
+    //         data_storing( game_status.health, game_status.heals_left, game_status.score );
+    //         flag = barrier2();  // if flag becomes true quit the game
+    //         if (flag == true )
+    //         {
+    //             return;
+    //         }
+    //         if ( count == 20 )
+    //         {
+    //             break; // breaking the loop
+    //         }
+    //     }
 
-	read.close();
+	// read.close();
     }
     else if (choice == 2)
     {
         string correct_answer[20] = {"C", "ZINC", "D", "A", "OXIDIZED", "HYDROLYSIS", "A", "A", "B", "C", "OXIDATION", "B", "C", "D", "B", "D", "C", "C", "D", "C"} ;
-        int count = 0; //To keep tract of questions
-        ifstream read( "electrochemistry_medium.txt");
+        string file_name = "electrochemistry_medium.txt";
+        game_play( correct_answer, file_name, heal, size );
+    //     string correct_answer[20] = {"C", "ZINC", "D", "A", "OXIDIZED", "HYDROLYSIS", "A", "A", "B", "C", "OXIDATION", "B", "C", "D", "B", "D", "C", "C", "D", "C"} ;
+    //     int count = 0; //To keep tract of questions
+    //     ifstream read( "electrochemistry_medium.txt");
 
-        if ( read.fail() )
-        {
-            cout << "Error Opening the file.. OOP :(" << endl;
-            exit(1);
-        }
+    //     if ( read.fail() )
+    //     {
+    //         cout << "Error Opening the file.. OOP :(" << endl;
+    //         exit(1);
+    //     }
 
-        while ( !read.eof() )
-        {
-            getline( read, line );
-            while ( line != "**")
-            {
-                cout << line << endl;
-		        getline( read, line );
-            }
-            cin >> answer;
+    //     while ( !read.eof() )
+    //     {
+    //         getline( read, line );
+    //         while ( line != "**")
+    //         {
+    //             cout << line << endl;
+	// 	        getline( read, line );
+    //         }
+    //         cin >> answer;
 
-            //converting into uppercase
-            answer = toUpper( answer );
+    //         //converting into uppercase
+    //         answer = toUpper( answer );
 
-            //checking correctness of the asnwer
+    //         //checking correctness of the asnwer
 
-            if ( answer == correct_answer[count])
-            {
-                game_status.score++;                
-            }
-            else
-            {
-                cout << "Wrong Answer!\n";
-                cout << "Correct Answer was " << correct_answer[count] << endl;
-                game_status.health = game_status.health - 2;
-            }
-            count++;
-            data_storing( game_status.health, game_status.heals_left, game_status.score );
-            flag = barrier2();  // if flag becomes true quit the game
+    //         if ( answer == correct_answer[count])
+    //         {
+    //             game_status.score++;                
+    //         }
+    //         else
+    //         {
+    //             cout << "Wrong Answer!\n";
+    //             cout << "Correct Answer was " << correct_answer[count] << endl;
+    //             game_status.health = game_status.health - 2;
+    //         }
+    //         count++;
+    //         data_storing( game_status.health, game_status.heals_left, game_status.score );
+    //         flag = barrier2();  // if flag becomes true quit the game
 
-            if (flag == true || game_status.health <= 0 )
-            {
-                return;
-            }
-            //asking for heals
-            if ( game_status.heals_left != 0 )
-            {
-                healing = healer();
-                if ( healing == true )
-                {
-                    game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
-                    //checking if guess is matched or not
-                    dice_guess = random_guess();
-                    // if guess is true
-                    if ( dice_guess ==  true )
-                    {
-                        game_status.health += 10;
-                    }
-                    else
-                    {
-                        checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
-                        if ( checker == true )
-                        {
-                            game_status.health = game_status.health - (size * 1);
-                        }
-                    }
-                }
-            }
+    //         if (flag == true || game_status.health <= 0 )
+    //         {
+    //             return;
+    //         }
+    //         //asking for heals
+    //         if ( game_status.heals_left != 0 )
+    //         {
+    //             healing = healer();
+    //             if ( healing == true )
+    //             {
+    //                 game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
+    //                 //checking if guess is matched or not
+    //                 dice_guess = random_guess();
+    //                 // if guess is true
+    //                 if ( dice_guess ==  true )
+    //                 {
+    //                     game_status.health += 10;
+    //                 }
+    //                 else
+    //                 {
+    //                     checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
+    //                     if ( checker == true )
+    //                     {
+    //                         game_status.health = game_status.health - (size * 1);
+    //                     }
+    //                 }
+    //             }
+    //         }
 
-            if ( count == 20 )
-            {
-                break; // breaking the loop
-            }
-        }
+    //         if ( count == 20 )
+    //         {
+    //             break; // breaking the loop
+    //         }
+    //     }
 
-	read.close();
+	// read.close();
 
     }
     else if ( choice == 3)
     {
         string correct_answer[20] = {"D", "E", "A", "E", "2.7", "A", "D", "5.4", "D", "C", "B", "C", "B", "C", "C", "D", "E", "B", "C", "C"} ;
-        int count = 0; //To keep tract of questions
-        ifstream read( "electrochemistry_hard.txt");
+        string file_name = "electrochemistry_hard.txt";
+        game_play( correct_answer, file_name, heal, size );
+    //     string correct_answer[20] = {"D", "E", "A", "E", "2.7", "A", "D", "5.4", "D", "C", "B", "C", "B", "C", "C", "D", "E", "B", "C", "C"} ;
+    //     int count = 0; //To keep tract of questions
+    //     ifstream read( "electrochemistry_hard.txt");
 
-        if ( read.fail() )
-        {
-            cout << "Error Opening the file.. OOP :(" << endl;
-            exit(1);
-        }
+    //     if ( read.fail() )
+    //     {
+    //         cout << "Error Opening the file.. OOP :(" << endl;
+    //         exit(1);
+    //     }
 
-        while ( !read.eof() )
-        {
-            getline( read, line );
-            while ( line != "**")
-            {
-                cout << line << endl;
-		        getline( read, line );
-            }
-            cin >> answer;
+    //     while ( !read.eof() )
+    //     {
+    //         getline( read, line );
+    //         while ( line != "**")
+    //         {
+    //             cout << line << endl;
+	// 	        getline( read, line );
+    //         }
+    //         cin >> answer;
 
-            //converting into uppercase
-            answer = toUpper( answer );
+    //         //converting into uppercase
+    //         answer = toUpper( answer );
 
-            //checking correctness of the asnwer
+    //         //checking correctness of the asnwer
 
-            if ( answer == correct_answer[count])
-            {
-                game_status.score++;                
-            }
-            else
-            {
-                cout << "Wrong Answer!\n";
-                cout << "Correct Answer was " << correct_answer[count] << endl;
-                game_status.health = game_status.health - 2;
-            }
-            count++;
-            data_storing( game_status.health, game_status.heals_left, game_status.score );
-            flag = barrier2();  // if flag becomes true quit the game
+    //         if ( answer == correct_answer[count])
+    //         {
+    //             game_status.score++;                
+    //         }
+    //         else
+    //         {
+    //             cout << "Wrong Answer!\n";
+    //             cout << "Correct Answer was " << correct_answer[count] << endl;
+    //             game_status.health = game_status.health - 2;
+    //         }
+    //         count++;
+    //         data_storing( game_status.health, game_status.heals_left, game_status.score );
+    //         flag = barrier2();  // if flag becomes true quit the game
 
-             if (flag == true || game_status.health <= 0 )
-            {
-                return;
-            }
-            //asking for heals
-            if ( game_status.heals_left != 0 )
-            {
-                healing = healer();
-                if ( healing == true )
-                {
-                    game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
-                    //checking if guess is matched or not
-                    dice_guess = random_guess();
-                    // if guess is true
-                    if ( dice_guess ==  true )
-                    {
-                        game_status.health += 10;
-                    }
-                    else
-                    {
-                        checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
-                        if ( checker == true )
-                        {
-                            game_status.health = game_status.health - (size * 1);
-                        }
-                    }
-                }
-            }
+    //          if (flag == true || game_status.health <= 0 )
+    //         {
+    //             return;
+    //         }
+    //         //asking for heals
+    //         if ( game_status.heals_left != 0 )
+    //         {
+    //             healing = healer();
+    //             if ( healing == true )
+    //             {
+    //                 game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
+    //                 //checking if guess is matched or not
+    //                 dice_guess = random_guess();
+    //                 // if guess is true
+    //                 if ( dice_guess ==  true )
+    //                 {
+    //                     game_status.health += 10;
+    //                 }
+    //                 else
+    //                 {
+    //                     checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
+    //                     if ( checker == true )
+    //                     {
+    //                         game_status.health = game_status.health - (size * 1);
+    //                     }
+    //                 }
+    //             }
+    //         }
 
-            if ( count == 20 )
-            {
-                break; // breaking the loop
-            }
-        }
+    //         if ( count == 20 )
+    //         {
+    //             break; // breaking the loop
+    //         }
+    //     }
 
-	read.close();
-
-
-    }
-}
-
-
-void thermochemistry( int choice, int * & heal, int size)
-{
-    string line;
-    string answer;
-    if (choice == 1 )
-    {
-        string correct_answer[20] = {"D", "A", "D", "B", "D", "THERMOCHEMISTRY", "C", "J", "C", "A", "B", "EXOTHERMIC", "A", "B", "D", "D", "D", "GLASS-CALORIMETER", "B", "D"} ;
-        int count = 0; //To keep tract of questions
-        ifstream read( "thermochemistry_easy.txt");
-
-        if ( read.fail() )
-        {
-            cout << "Error Opening the file.. OOP :(" << endl;
-            exit(1);
-        }
-
-        while ( !read.eof() )
-        {
-            getline( read, line );
-            while ( line != "**")
-            {
-                cout << line << endl;
-		        getline( read, line );
-            }
-            cin >> answer;
-
-            //converting into uppercase
-            answer = toUpper( answer );
-
-            //checking correctness of the asnwer
-
-            if ( answer == correct_answer[count])
-            {
-                game_status.score++;                
-            }
-            else
-            {
-                cout << "Wrong Answer!\n";
-                cout << "Correct Answer was " << correct_answer[count] << endl;
-                game_status.health = game_status.health - 2;
-            }
-            count++;
-            data_storing( game_status.health, game_status.heals_left, game_status.score );
-            flag = barrier2();  // if flag becomes true quit the game
-
-            if (flag == true || game_status.health <= 0 )
-            {
-                return;
-            }
-            //asking for heals
-            if ( game_status.heals_left != 0 )
-            {
-                healing = healer();
-                if ( healing == true )
-                {
-                    game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
-                    //checking if guess is matched or not
-                    dice_guess = random_guess();
-                    // if guess is true
-                    if ( dice_guess ==  true )
-                    {
-                        game_status.health += 10;
-                    }
-                    else
-                    {
-                        checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
-                        if ( checker == true )
-                        {
-                            game_status.health = game_status.health - (size * 1);
-                        }
-                    }
-                }
-            }
-
-            if ( count == 20 )
-            {
-                break; // breaking the loop
-            }
-        }
-
-	read.close();
-    }
-    else if (choice == 2)
-    {
-        string correct_answer[20] = {"STATE-FUNCTIONS", "A", "A", "A", "C", "B", "C", "B", "A", "D", "D", "D", "C", "B", "A", "C", "GIBBS-ENERGY", "A", "D", "A"} ;
-        int count = 0; //To keep tract of questions
-        ifstream read( "thermochemistry_medium.txt");
-
-        if ( read.fail() )
-        {
-            cout << "Error Opening the file.. OOP :(" << endl;
-            exit(1);
-        }
-
-        while ( !read.eof() )
-        {
-            getline( read, line );
-            while ( line != "**")
-            {
-                cout << line << endl;
-		        getline( read, line );
-            }
-            cin >> answer;
-
-            //converting into uppercase
-            answer = toUpper( answer );
-
-            //checking correctness of the asnwer
-
-            if ( answer == correct_answer[count])
-            {
-                game_status.score++;                
-            }
-            else
-            {
-                cout << "Wrong Answer!\n";
-                cout << "Correct Answer was " << correct_answer[count] << endl;
-                game_status.health = game_status.health - 2;
-            }
-            count++;
-            data_storing( game_status.health, game_status.heals_left, game_status.score );
-            flag = barrier2();  // if flag becomes true quit the game
-
-            if (flag == true || game_status.health <= 0 )
-            {
-                return;
-            }
-            //asking for heals
-            if ( game_status.heals_left != 0 )
-            {
-                healing = healer();
-                if ( healing == true )
-                {
-                    game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
-                    //checking if guess is matched or not
-                    dice_guess = random_guess();
-                    // if guess is true
-                    if ( dice_guess ==  true )
-                    {
-                        game_status.health += 10;
-                    }
-                    else
-                    {
-                        checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
-                        if ( checker == true )
-                        {
-                            game_status.health = game_status.health - (size * 1);
-                        }
-                    }
-                }
-            }
-
-            if ( count == 20 )
-            {
-                break; // breaking the loop
-            }
-        }
-
-	read.close();
-
-    }
-    else if ( choice == 3)
-    {
-        string correct_answer[20] = {"E", "A", "+30.0", "C", "E", "D", "B", "D", "A", "-581.0", "C", "A", "A", "A", "E", "-140.0", "C", "A", "D", "D"} ;
-        int count = 0; //To keep tract of questions
-        ifstream read( "thermochemistry_hard.txt");
-
-        if ( read.fail() )
-        {
-            cout << "Error Opening the file.. OOP :(" << endl;
-            exit(1);
-        }
-
-        while ( !read.eof() )
-        {
-            getline( read, line );
-            while ( line != "**")
-            {
-                cout << line << endl;
-		        getline( read, line );
-            }
-            cin >> answer;
-
-            //converting into uppercase
-            answer = toUpper( answer );
-
-            //checking correctness of the asnwer
-
-            if ( answer == correct_answer[count])
-            {
-                game_status.score++;                
-            }
-            else
-            {
-                cout << "Wrong Answer!\n";
-                cout << "Correct Answer was " << correct_answer[count] << endl;
-                game_status.health = game_status.health - 2;
-            }
-            count++;
-            data_storing( game_status.health, game_status.heals_left, game_status.score );
-            flag = barrier2();  // if flag becomes true quit the game
-
-            if (flag == true || game_status.health <= 0 )
-            {
-                return;
-            }
-            //asking for heals
-            if ( game_status.heals_left != 0 )
-            {
-                healing = healer();
-                if ( healing == true )
-                {
-                    game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
-                    //checking if guess is matched or not
-                    dice_guess = random_guess();
-                    // if guess is true
-                    if ( dice_guess ==  true )
-                    {
-                        game_status.health += 10;
-                    }
-                    else
-                    {
-                        checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
-                        if ( checker == true )
-                        {
-                            game_status.health = game_status.health - (size * 1);
-                        }
-                    }
-                }
-            }
-
-            if ( count == 20 )
-            {
-                break; // breaking the loop
-            }
-        }
-
-	read.close();
+	// read.close();
 
 
     }
 }
+
 
 // Questions taken from following websites
 //https://www.mcqspk.com/thermochemistry-mcqs/3/
 //https://www.chem.tamu.edu/class/fyp/mcquest/ch15.html
 //https://www.neetprep.com/questions/54-Chemistry/650-Thermodynamics
+//This function gives questions to the player from the respective files according to his choice 
+// of difficulty level of the topic 'Therochemistry'
+// It takes choice as an argument to know what difficulty level a person wants, heal array to know about healing and size of the dynamic array
+void thermochemistry( int choice, int * & heal, int size)
+{
+ //   string line;
+ //   string answer;
+    if (choice == 1 )
+    {
+        string correct_answer[20] = {"D", "A", "D", "B", "D", "THERMOCHEMISTRY", "C", "J", "C", "A", "B", "EXOTHERMIC", "A", "B", "D", "D", "D", "GLASS-CALORIMETER", "B", "D"} ;
+        string file_name = "thermochemistry_easy.txt";
+        game_play( correct_answer, file_name, heal, size );
+    //     string correct_answer[20] = {"D", "A", "D", "B", "D", "THERMOCHEMISTRY", "C", "J", "C", "A", "B", "EXOTHERMIC", "A", "B", "D", "D", "D", "GLASS-CALORIMETER", "B", "D"} ;
+    //     int count = 0; //To keep tract of questions
+    //     ifstream read( "thermochemistry_easy.txt");
+
+    //     if ( read.fail() )
+    //     {
+    //         cout << "Error Opening the file.. OOP :(" << endl;
+    //         exit(1);
+    //     }
+
+    //     while ( !read.eof() )
+    //     {
+    //         getline( read, line );
+    //         while ( line != "**")
+    //         {
+    //             cout << line << endl;
+	// 	        getline( read, line );
+    //         }
+    //         cin >> answer;
+
+    //         //converting into uppercase
+    //         answer = toUpper( answer );
+
+    //         //checking correctness of the asnwer
+
+    //         if ( answer == correct_answer[count])
+    //         {
+    //             game_status.score++;                
+    //         }
+    //         else
+    //         {
+    //             cout << "Wrong Answer!\n";
+    //             cout << "Correct Answer was " << correct_answer[count] << endl;
+    //             game_status.health = game_status.health - 2;
+    //         }
+    //         count++;
+    //         data_storing( game_status.health, game_status.heals_left, game_status.score );
+    //         flag = barrier2();  // if flag becomes true quit the game
+
+    //         if (flag == true || game_status.health <= 0 )
+    //         {
+    //             return;
+    //         }
+    //         //asking for heals
+    //         if ( game_status.heals_left != 0 )
+    //         {
+    //             healing = healer();
+    //             if ( healing == true )
+    //             {
+    //                 game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
+    //                 //checking if guess is matched or not
+    //                 dice_guess = random_guess();
+    //                 // if guess is true
+    //                 if ( dice_guess ==  true )
+    //                 {
+    //                     game_status.health += 10;
+    //                 }
+    //                 else
+    //                 {
+    //                     checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
+    //                     if ( checker == true )
+    //                     {
+    //                         game_status.health = game_status.health - (size * 1);
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+    //         if ( count == 20 )
+    //         {
+    //             break; // breaking the loop
+    //         }
+    //     }
+
+	// read.close();
+    }
+    else if (choice == 2)
+    {
+        string correct_answer[20] = {"STATE-FUNCTIONS", "A", "A", "A", "C", "B", "C", "B", "A", "D", "D", "D", "C", "B", "A", "C", "GIBBS-ENERGY", "A", "D", "A"} ;
+        string file_name = "thermochemistry_medium.txt";
+        game_play( correct_answer, file_name, heal, size );
+    //     string correct_answer[20] = {"STATE-FUNCTIONS", "A", "A", "A", "C", "B", "C", "B", "A", "D", "D", "D", "C", "B", "A", "C", "GIBBS-ENERGY", "A", "D", "A"} ;
+    //     int count = 0; //To keep tract of questions
+    //     ifstream read( "thermochemistry_medium.txt");
+
+    //     if ( read.fail() )
+    //     {
+    //         cout << "Error Opening the file.. OOP :(" << endl;
+    //         exit(1);
+    //     }
+
+    //     while ( !read.eof() )
+    //     {
+    //         getline( read, line );
+    //         while ( line != "**")
+    //         {
+    //             cout << line << endl;
+	// 	        getline( read, line );
+    //         }
+    //         cin >> answer;
+
+    //         //converting into uppercase
+    //         answer = toUpper( answer );
+
+    //         //checking correctness of the asnwer
+
+    //         if ( answer == correct_answer[count])
+    //         {
+    //             game_status.score++;                
+    //         }
+    //         else
+    //         {
+    //             cout << "Wrong Answer!\n";
+    //             cout << "Correct Answer was " << correct_answer[count] << endl;
+    //             game_status.health = game_status.health - 2;
+    //         }
+    //         count++;
+    //         data_storing( game_status.health, game_status.heals_left, game_status.score );
+    //         flag = barrier2();  // if flag becomes true quit the game
+
+    //         if (flag == true || game_status.health <= 0 )
+    //         {
+    //             return;
+    //         }
+    //         //asking for heals
+    //         if ( game_status.heals_left != 0 )
+    //         {
+    //             healing = healer();
+    //             if ( healing == true )
+    //             {
+    //                 game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
+    //                 //checking if guess is matched or not
+    //                 dice_guess = random_guess();
+    //                 // if guess is true
+    //                 if ( dice_guess ==  true )
+    //                 {
+    //                     game_status.health += 10;
+    //                 }
+    //                 else
+    //                 {
+    //                     checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
+    //                     if ( checker == true )
+    //                     {
+    //                         game_status.health = game_status.health - (size * 1);
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+    //         if ( count == 20 )
+    //         {
+    //             break; // breaking the loop
+    //         }
+    //     }
+
+	// read.close();
+
+    }
+    else if ( choice == 3)
+    {
+        string correct_answer[20] = {"E", "A", "+30.0", "C", "E", "D", "B", "D", "A", "-581.0", "C", "A", "A", "A", "E", "-140.0", "C", "A", "D", "D"} ;
+        string file_name = "thermochemistry_hard.txt";
+        game_play( correct_answer, file_name, heal, size );
+    //     string correct_answer[20] = {"E", "A", "+30.0", "C", "E", "D", "B", "D", "A", "-581.0", "C", "A", "A", "A", "E", "-140.0", "C", "A", "D", "D"} ;
+    //     int count = 0; //To keep tract of questions
+    //     ifstream read( "thermochemistry_hard.txt");
+
+    //     if ( read.fail() )
+    //     {
+    //         cout << "Error Opening the file.. OOP :(" << endl;
+    //         exit(1);
+    //     }
+
+    //     while ( !read.eof() )
+    //     {
+    //         getline( read, line );
+    //         while ( line != "**")
+    //         {
+    //             cout << line << endl;
+	// 	        getline( read, line );
+    //         }
+    //         cin >> answer;
+
+    //         //converting into uppercase
+    //         answer = toUpper( answer );
+
+    //         //checking correctness of the asnwer
+
+    //         if ( answer == correct_answer[count])
+    //         {
+    //             game_status.score++;                
+    //         }
+    //         else
+    //         {
+    //             cout << "Wrong Answer!\n";
+    //             cout << "Correct Answer was " << correct_answer[count] << endl;
+    //             game_status.health = game_status.health - 2;
+    //         }
+    //         count++;
+    //         data_storing( game_status.health, game_status.heals_left, game_status.score );
+    //         flag = barrier2();  // if flag becomes true quit the game
+
+    //         if (flag == true || game_status.health <= 0 )
+    //         {
+    //             return;
+    //         }
+    //         //asking for heals
+    //         if ( game_status.heals_left != 0 )
+    //         {
+    //             healing = healer();
+    //             if ( healing == true )
+    //             {
+    //                 game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
+    //                 //checking if guess is matched or not
+    //                 dice_guess = random_guess();
+    //                 // if guess is true
+    //                 if ( dice_guess ==  true )
+    //                 {
+    //                     game_status.health += 10;
+    //                 }
+    //                 else
+    //                 {
+    //                     checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
+    //                     if ( checker == true )
+    //                     {
+    //                         game_status.health = game_status.health - (size * 1);
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+    //         if ( count == 20 )
+    //         {
+    //             break; // breaking the loop
+    //         }
+    //     }
+
+	// read.close();
+
+
+    }
+}
+
+
 
 void chemistry_topics( int choice, int * &heal, int size)
  {
