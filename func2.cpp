@@ -22,7 +22,7 @@ bool healer()
     cin >> s;
 
     // Checking if the key enetered is right or not
-    while ( s != 'y' || s != 'y' || s != 'n' || s != 'N' )
+    while ( s != 'y' && s != 'Y' && s != 'n' && s != 'N' )
     {
         cout << "You entered the wrong key!\n";
         typewriter( line, 150000 );
@@ -34,7 +34,7 @@ bool healer()
     {
         return true;
     }
-    else
+    else if ( s == 'N' || s == 'n' )
     {
         return false;
     }
