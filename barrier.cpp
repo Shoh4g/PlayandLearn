@@ -41,7 +41,7 @@ bool barrier2()
     cin >> s;  // get user's answer
 
     // This is to check if the entered key is right or not
-    while ( s != 'c' || s != 'C' || s != 'q' || s != 'Q')
+    while ( s != 'c' && s != 'C' && s != 'q' && s != 'Q')
     {
         cout << "You entered the wrong key!\n";
         typewriter( line, 150000 );
