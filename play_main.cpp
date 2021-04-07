@@ -45,6 +45,29 @@ struct data{
 struct data game_status;   //making game_status a global variable to be used in the whole program
 
 
+
+// An array size increasing function
+// This function is inspired from largenumber.cpp
+void grow_array( string * & array, int & size )
+{
+    if (array == NULL)
+        return;
+
+    int newSize = size * 2;
+
+    // doubled the size of the array;
+    string * tmp = new string [ newSize ];
+    // copy original contents
+    for (int i = 0; i < size; ++i)
+        tmp[i] = array[i];
+
+    delete [] array;
+
+    array = tmp;
+    size = newSize;
+}
+
+
 // will decide whether to deduct health for using healing or not
 //returns true if health needs to be deducted
 bool heal_deduction_checker( int * & heal, int size )
@@ -137,12 +160,13 @@ void show_status()
 
 // This is a game_play function which takes correct answers array, file name to be opened for questions and heal and its size
 // In this fucntion most of the game is being played and conducted
-void game_play( string correct_answer[20], string file_name, int * & heal, int size  )
+void game_play( string correct_answer[20], string file_name, int * & heal, int size, string * & report, int & arraysize, int & index )
 {
     string answer;   // To store the anser of the user
     string line;    // To allowing lines from the file to be read
 
     int count = 0;                          //To keep track of questions and suggesting and comparing answers accordingly
+    double correct = 0;                    // To keep track of correct answered questions
 
     ifstream read( file_name.c_str() );   //Opens the respecrive file
 
@@ -175,7 +199,8 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
         if ( answer == correct_answer[count])
         {
             cout << " Yipeee!! Answer is Correct\n";
-            game_status.score++;               
+            game_status.score++; 
+            correct++;              
         }
         else
         {
@@ -199,7 +224,17 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
             {
                 cout << " You have no health left :( Sorry You can't play more\n";
                 data_storing( game_status.health, game_status.heals_left, game_status.score );  //updating status
-                show_status();  // showing current status
+                topic_report( file_name, count, correct );  // generating end of the topic report
+
+                //checking if the array size is need to be increased or not
+                if ( index >= arraysize )
+                {
+                    grow_array( report, arraysize );
+                }
+
+                string percent = percentage_calculator( count, correct );  // to get percentage for final report
+                report[index] = percent;
+                index++;
             }
             return;   // It returns to the choosing of the topic function
         }
@@ -228,7 +263,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
                     cout << " Your Guess is wrong :( Better Luck Next Time!\n";
                     checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
                     if ( checker == true )
-                    {
+                     {
                         cout << size * 1 << "health points are decreased from your health\n";
                         game_status.health = game_status.health - (size * 1);
                     }
@@ -241,11 +276,22 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
 
         if ( count == 20 )
         {
+            topic_report( file_name, count, correct );  // generating end of the topic report
+            string percent = percentage_calculator( count, correct );  // to get percentage for final report
+
+            //checking if the array size is need to be increased or not
+            if ( index >= arraysize )
+            {
+                grow_array( report, arraysize );
+            }
+
+            report[index] = percent;
+            index++;
             break; // breaking the loop
         }
     }
 
-read.close();   // clsoing the file in the end
+    read.close();   // clsoing the file in the end
 
 }
 
@@ -258,31 +304,55 @@ read.close();   // clsoing the file in the end
 //This function gives questions to the player from the respective files according to his choice 
 // of difficulty level of the topic 'Periodicity'
 // It takes choice as an argument to know what difficulty level a person wants, heal array to know about healing and size of the dynamic array
-void periodicity ( int choice, int * & heal, int size )
+void periodicity ( int choice, int * & heal, int size, string * & report, int & arraysize, int & index )
 {
 
     // Choice for easy level
     if ( choice == 1 )
     {
+        //checking if the array size is need to be increased or not
+        if ( index >= arraysize )
+        {
+            grow_array( report, arraysize );
+        }
+
+        report[index] = "Easy";
+        index++;
         string correct_answer[20] = { "C", "B", "IONIZATION-ENERGY", "B", "INCREASES", "B", "NOBLE-METALS", "C", "B", "A", "C", "33", "B", "B", "A", "A", "C", "IODINE", "D", "D" } ;
         string file_name = "periodicity_easy.txt";
-        game_play( correct_answer, file_name, heal, size );   // Playing the game
+        game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
 
     }
     // Choice for medium level
     else if ( choice == 2 )
     {
+        //checking if the array size is need to be increased or not
+        if ( index >= arraysize )
+        {
+            grow_array( report, arraysize );
+        }
+
+        report[index] = "Medium";
+        index++;
         string correct_answer[20] = {"INCREASES", "D", "C", "B", "C", "18", "B", "B", "D", "C", "A", "2", "D", "6", "C", "D", "ACIDIC", "C", "B", "B"} ;
         string file_name = "periodicity_medium.txt";
-        game_play( correct_answer, file_name, heal, size );   // Playing the game
+        game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
 
     }
     // choice for hard level
     else if ( choice == 3 )
     {
+        //checking if the array size is need to be increased or not
+        if ( index >= arraysize )
+        {
+            grow_array( report, arraysize );
+        }
+
+        report[index] = "Hard";
+        index++;
         string correct_answer[20] = {"C", "DECREASES", "A", "C", "A", "C", "B", "B", "4", "D", "C", "ISOTOPES", "C", "B", "A", "B", "C", "ENDOTHERMIC", "A", "C"} ;
         string file_name = "periodicity_hard.txt";
-        game_play( correct_answer, file_name, heal, size );   // Playing the game
+        game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
  
      }
 }
@@ -296,30 +366,54 @@ void periodicity ( int choice, int * & heal, int size )
 //This function gives questions to the player from the respective files according to his choice 
 // of difficulty level of the topic 'Electrochemistry'
 // It takes choice as an argument to know what difficulty level a person wants, heal array to know about healing and size of the dynamic array
-void electrochemistry( int choice, int * & heal, int size )
+void electrochemistry( int choice, int * & heal, int size, string * & report, int & arraysize, int & index )
 {
     // choice for easy level
     if ( choice == 1 )
     {
+        //checking if the array size is need to be increased or not
+        if ( index >= arraysize )
+        {
+            grow_array( report, arraysize );
+        }
+
+        report[index] = "Easy";
+        index++;
         string correct_answer[20] = {"REDUCTION", "B", "D", "B", "C", "OXIDATION", "B", "OXIDIZED", "GRAPHITE", "B", "A", "C", "B", "D", "CHEMICAL-ENERGY", "A", "ELECTROPLATING", "C", "A", "0"} ;
         string file_name = "electrochemistry_easy.txt";
-        game_play( correct_answer, file_name, heal, size );   // Playing the game
+        game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
 
     }
     // choice for medium level
     else if (choice == 2 )
     {
+        //checking if the array size is need to be increased or not
+        if ( index >= arraysize )
+        {
+            grow_array( report, arraysize );
+        }
+
+        report[index] = "Medium";
+        index++;
         string correct_answer[20] = {"C", "ZINC", "D", "A", "OXIDIZED", "HYDROLYSIS", "A", "A", "B", "C", "OXIDATION", "B", "C", "D", "B", "D", "C", "C", "D", "C"} ;
         string file_name = "electrochemistry_medium.txt";
-        game_play( correct_answer, file_name, heal, size );   // Playing the game
+        game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
 
     }
     //choice for hard level
     else if ( choice == 3 )
     {
+        //checking if the array size is need to be increased or not
+        if ( index >= arraysize )
+        {
+            grow_array( report, arraysize );
+        }
+
+        report[index] = "Hard";
+        index++;
         string correct_answer[20] = {"D", "E", "A", "E", "2.7", "A", "D", "5.4", "D", "C", "B", "C", "B", "C", "C", "D", "E", "B", "C", "C"} ;
         string file_name = "electrochemistry_hard.txt";
-        game_play( correct_answer, file_name, heal, size );   // Playing the game
+        game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
 
     }
 }
@@ -332,37 +426,61 @@ void electrochemistry( int choice, int * & heal, int size )
 //This function gives questions to the player from the respective files according to his choice 
 // of difficulty level of the topic 'Therochemistry'
 // It takes choice as an argument to know what difficulty level a person wants, heal array to know about healing and size of the dynamic array
-void thermochemistry( int choice, int * & heal, int size )
+void thermochemistry( int choice, int * & heal, int size, string * & report, int & arraysize, int & index )
 {
     // choice for easy level
     if ( choice == 1 )
     {
+        //checking if the array size is need to be increased or not
+        if ( index >= arraysize )
+        {
+            grow_array( report, arraysize );
+        }
+
+        report[index] = "Easy";
+        index++;
         string correct_answer[20] = {"D", "A", "D", "B", "D", "THERMOCHEMISTRY", "C", "J", "C", "A", "B", "EXOTHERMIC", "A", "B", "D", "D", "D", "GLASS-CALORIMETER", "B", "D"} ;
         string file_name = "thermochemistry_easy.txt";
-        game_play( correct_answer, file_name, heal, size );  // Playing the game
+        game_play( correct_answer, file_name, heal, size, report, arraysize, index );  // Playing the game
 
     //choice for medium level 
     }
     else if (choice == 2 )
     {
+        //checking if the array size is need to be increased or not
+        if ( index >= arraysize )
+        {
+            grow_array( report, arraysize );
+        }
+
+        report[index] = "Medium";
+        index++;
         string correct_answer[20] = {"STATE-FUNCTIONS", "A", "A", "A", "C", "B", "C", "B", "A", "D", "D", "D", "C", "B", "A", "C", "GIBBS-ENERGY", "A", "D", "A"} ;
         string file_name = "thermochemistry_medium.txt";
-        game_play( correct_answer, file_name, heal, size );  //playing the game
+        game_play( correct_answer, file_name, heal, size, report, arraysize, index );  //playing the game
 
     }
     // choice for hard level
     else if ( choice == 3 )
     {
+        //checking if the array size is need to be increased or not
+        if ( index >= arraysize )
+        {
+            grow_array( report, arraysize );
+        }
+        
+        report[index] = "Hard";
+        index++;
         string correct_answer[20] = {"E", "A", "+30.0", "C", "E", "D", "B", "D", "A", "-581.0", "C", "A", "A", "A", "E", "-140.0", "C", "A", "D", "D"} ;
         string file_name = "thermochemistry_hard.txt";
-        game_play( correct_answer, file_name, heal, size );   // Playing the game
+        game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
     }
 
 }
 
 
 // this function allows you to select the topics you want to practice and test
-void chemistry_topics( int choice, int * &heal, int size )
+void chemistry_topics( int choice, int * &heal, int size, string * & report, int & arraysize, int & index )
  {
     int  difficulty_level;   // To aid in choosing easy, medium, hard
     string level_selection = "What difficulty level you want?\n->Press 1 for Easy\n->Press 2 for Medium\n->Press 3 for Hard\n";
@@ -381,7 +499,15 @@ void chemistry_topics( int choice, int * &heal, int size )
     // choice for choosing electrochemistry
     if ( choice == 1 )
     {
-        electrochemistry( difficulty_level, heal, size );
+        //checking if the array size is need to be increased or not
+        if ( index >= arraysize )
+        {
+            grow_array( report, arraysize );
+        }
+
+        report[index] = "Electro-Chemistry";
+        index++;
+        electrochemistry( difficulty_level, heal, size, report, arraysize, index );
 
         if ( flag == true )  //true flag informs to quit the game
         {
@@ -391,7 +517,15 @@ void chemistry_topics( int choice, int * &heal, int size )
     // choice for choosing periodicity
     else if ( choice == 2 )
     {
-        periodicity( difficulty_level, heal, size );
+        //checking if the array size is need to be increased or not
+        if ( index >= arraysize )
+        {
+            grow_array( report, arraysize );
+        }
+
+        report[index] = "Periodicity";
+        index++;        
+        periodicity( difficulty_level, heal, size, report, arraysize, index );
 
         if ( flag == true )  //true flag informs to quit the game
         {
@@ -401,7 +535,15 @@ void chemistry_topics( int choice, int * &heal, int size )
     // choice for choosing thermochemistry
     else if ( choice == 3 )
     {
-        thermochemistry( difficulty_level, heal, size );
+        //checking if the array size is need to be increased or not
+        if ( index >= arraysize )
+        {
+            grow_array( report, arraysize );
+        }
+
+        report[index] = "Thermo-Chemistry";
+        index++;
+        thermochemistry( difficulty_level, heal, size, report, arraysize, index );
 
         if ( flag == true )  //true flag informs to quit the game
         {
@@ -410,6 +552,59 @@ void chemistry_topics( int choice, int * &heal, int size )
     }
 }
 
+
+
+// A function that returns percentage score in the form of string
+string percentage_calculator( int count, double correct )
+{
+    cout << showpoint << fixed << setprecision(2);
+    double percentage = correct / count;
+    string percent = to_string(percentage);
+    return percent;
+}
+
+
+//This will print the end of the topic score report
+void topic_report( string filename,  int count, double correct )
+{
+    system("clear");
+    cout << showpoint << fixed << setprecision(2);
+    show_status();   // This will show the player name, health, heals, and score
+    double percentage = correct / count;
+    cout << "Your Score in " << filename << " is " << percentage << "%" << endl;
+
+    // adding comments with respect to score
+    if ( percentage < 50.0 )
+    {
+        cout << "Practice and revise more next time!\n";
+    }
+    else if ( percentage < 70.0 && percentage > 50.0 )
+    {
+        cout << "Score could be improved! \n";
+    }
+    else if ( percentage < 80.0 && percentage > 70.0 )
+    {
+        cout << "Score could be improved! \n";
+    }
+    else if ( percentage > 80.0 )
+    {
+        cout << "Wow Champ!\n";
+    }    
+
+}
+
+// This wil print the final report of the player
+void final_report( string * & report, int index )
+{
+    cout << setfill('*');
+    cout << setw(30) << player_name << setw(30) << endl; 
+    cout << setw(30) << "Final Report" << setw(30) << endl; 
+    cout << setfill(' ');
+    for ( int i = 0; i < index; i += 3)
+    {
+        cout << setw(20) << report[i] << setw(10) << "|" << setw(10) << report[i + 1] << setw(10) << "|" << setw(5) << report[i + 2] << endl;
+    }
+}
 
 // This is the main function
 int main()
@@ -435,6 +630,14 @@ int main()
 
     data_storing(50,size,0);  //storing initial data of the player
 
+//--------------------------------------------------------------------------------------------
+    //Creating Dynamic array for report production
+    int report_index_counter = 0;  // to keep track of where to add what things
+    string * report = NULL;
+    int arraysize = 3;  //initial arraysize
+    report = new string [arraysize];
+//------------------------------------------------------------------
+
 
     //Selecting topic related to chemistry
     int topic;
@@ -446,20 +649,26 @@ int main()
     // adding a do while loop for asking game and continuing it
     do
     {
-        typewriter(topic_selection, 150000);
-        typewriter(topic_selection2, 150000);
+        typewriter( topic_selection, 150000 );
+        typewriter( topic_selection2, 150000 );
         cin >> topic;
 
         // Checking if the key enetered is right or not
         while ( topic != 1 || topic != 2 || topic != 3 )
         {
             cout << "You entered the wrong key!\n";
-            typewriter(topic_selection, 150000);
-            typewriter(topic_selection2, 150000);
+            typewriter( topic_selection, 150000 );
+            typewriter( topic_selection2, 150000 );
             cin >> topic;
         }
 
-        chemistry_topics( topic, heal, size );   // sending heal array as well to keep track of healings
+        chemistry_topics( topic, heal, size, report, arraysize, report_index_counter );   // sending heal array as well to keep track of healings
+        // checking flag for quit signal
+        if ( flag == true )
+        {
+            break;  // break the loop
+        }
+
         typewriter( continue_game, 150000 );
         cin >> continue_answer;
 
@@ -477,15 +686,20 @@ int main()
 
     if ( flag == true || game_status.health <= 0 || continue_answer == "N" || continue_answer == "n" )  //true flag informs to quit the game
     {
+        
         string end = "Bye Bye! I hope you enjoyed the game!";
         //report card generator
+        final_report( report, report_index_counter );
 
 
         typewriter( end, 150000 );
         delete[] heal;  // to avoide memory leak
+        delete[] report;
         return 0;
     }
     
-    return 0;
+   
     delete[] heal;  // to avoide memory leak
+    delete[] report;
+    return 0;
 }
