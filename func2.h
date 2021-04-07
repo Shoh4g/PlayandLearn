@@ -6,4 +6,6 @@ bool heal();
 
 // This is generating random numbers and returning true if the guess is true
 bool random_guess();
+
+
 #endif

@@ -1,51 +1,65 @@
 //This c++ program generate introduction for the game and has some important functions which are used in the game
+
+
 #include <iostream>
 #include <iomanip>
 #include <time.h>
 #include <ctime>
+#include <string>
 #ifdef _WIN32
 #include <Windows.h>  //However, program need sto be changed. Change system("clear") to system("cls") and use numbers in Sleep(1000) for 1 sec in windows
 #else                 // and sleep(1) for 1 sec in linux
 #include <unistd.h> //for windows, change it into <windows.h>
 #endif
 
-#include <string>
 
-#include "functions.h"   //creating Header files
+//Adding header files that are created by the programmer to be included
+#include "functions.h"   
 #include "barrier.h"
 
 
 using namespace std;
 
-//A function to convert everything to uppercase
+
+
+//A function to convert everything to uppercase from lowercase
+// It takes the string as an input and returns that string converted into upper case
 string toUpper( string str )
 {
+    // A loop that runs till the end of the string so that all the string is converted to uppercase
     for ( int i = 0; i < str.length(); i++ )
     {
-        char y = str[i];
-        if (y >= 'a' && y <= 'z')
+        char y = str[i];               // to store each character and convert it into upper case
+        if ( y >= 'a' && y <= 'z' )     // A condition to check if the character is a lowercase letter or not
         {
-            str[i] = ( ( y - 'a') + 65 );
+            str[i] = ( ( y - 'a') + 65 );   // converting to uppercase using ASCII values and mathematical formula
         }
     }
 
+    // returns the string converted in upper case
     return str;
 } 
 
 
+
 // This function gives a typewriter effect to the output of the game
 //It uses sleep function to give out the cout output with delay!
+// It takes the string on which this effect is needed  and the time which tells the speed of typewriting effect
 void typewriter( string str, int time )
 {
+    // This loops takes every character from the string and inputs it on the screen with time delay given as parameter of the function
     for ( int i = 0; str[i] != '\0'; i++ )
     {
         cout << str[i];
-	cout.flush();
-	usleep( time );
+        cout.flush();
+	    usleep( time );
     }
+
 }
 
-// Creating a function which will print a a specific set of characters on the screen for certain times
+
+
+// Creating a function which will print a specific set of characters on the screen for certain times
 // For example if character entered is '*' and number of times to be printed is 80 the output will look like
 // ********************************************************************************
 void print_line_pattern( char character_to_print, int times )
@@ -56,13 +70,20 @@ void print_line_pattern( char character_to_print, int times )
     }
 
     cout << endl;
+
 }
 
 
 
 //This Function creates an introductory diamond logo of the screen
+// Sleep function is used to allow a slowmo creation of diamond
+// The function returns nothing
+// input arguments are the character, the rows and columns
 void diamond( char diamondCharacter, int m, int r)
 {
+    // The first for loop prints the upper part of the diamond
+    // and it adds the name of the game at the middle of the diamond
+    // Diamond is printed in a row by row manner
     for ( int i = 0; i < r;  i++ )
     {
         if ( i != r - 1 )
@@ -71,7 +92,7 @@ void diamond( char diamondCharacter, int m, int r)
             {
                 cout << setw( m - (3 * i ) + 1) << diamondCharacter;
                 cout << endl;
-                sleep(1);
+                sleep(1);   // To guve a time delay effect
             }
             else
             {
@@ -88,6 +109,7 @@ void diamond( char diamondCharacter, int m, int r)
         }
     }
     
+    // This part prints the rest of the diamond .i.e. the remaining lower part
     for ( int i = r - 2 ; i >= 0;  i-- )
     {
             if ( i == 0 )
@@ -103,12 +125,16 @@ void diamond( char diamondCharacter, int m, int r)
                 sleep(1);
             }
     }
+
 }
 
-// This function contains the main introduction of the game!
+
+
+// This function contains the main introduction of the game! It prints the introduction and instructions
 //It returnss name of the player
 string introduction()
 {
+    // Various string variables are used to store the text inorder to give a typewriter effect when they are printed on console
     string player_name;   
     string greetings  = "Greetings ";
     string line_1 = "This is how game works!\n";
@@ -124,24 +150,26 @@ string introduction()
     string description_10 = "if your guess is wrong, no health points will be deducted.\nHowever, after then every next time, your guess is wrong, health points";
     string description_11 = " will be deducted from your current health points!\nThe amount of health points deducted depends on your choice of number of rolls.\n";
     string description_12 = "The deduction in health is equal to (choice of rolls*1).\nSo use healing CAREFULLY!\nAt the end of each topic/level, you can quit the game by pressing 'q' or move on another ";
-    string description_13 = "topic/level by pressing 'ENTER'.At the end of each topic, your score will be shown.At the end of the game or when you quit, you final report card will be displayed.\n";
+    string description_13 = "topic/level by pressing 'ENTER'.At the end of each topic, your score will be shown.At the end of the game or when you quit, your final report card will be displayed.\n";
     string description_14 = "Lastly, you will be asked to answer the questions in two ways!\n1- By typing in the mcq letter.\n2- By typing in the answer which won't have any options.\n";
     string description_15 = "If you enter unexpected values, the game might behave in unexpected ways :(\nIf game crashes, you can restart the program.\n";
 
+    // printing the logo on the console
     system("clear"); // clear screen command for linux
-    print_line_pattern( '=', 80 );
-    sleep(1);
-    diamond( '*', 40, 5 );
+    print_line_pattern( '=', 80 );   // Prints the pattern of =
+    sleep(1);   //gives a delay
+    diamond( '*', 40, 5 );   // prints the diamomnd
     sleep(1);
     print_line_pattern( '=', 80 );
     sleep(2);
-    system("clear");  //for windows use system("cls")
+    system("clear");  // It clears the screen in linux for windows use system("cls")
 
- 
+    // asking the name of the user
     string asking_player_name = "What should we call you?\n";
     typewriter( asking_player_name, 150000 );
     getline( cin, player_name);
 
+    // starting the introduction
     typewriter( greetings, 150000 );
     typewriter ( player_name, 150000 );
     sleep(1);
@@ -169,8 +197,9 @@ string introduction()
     typewriter( description_15, 150000 );
     print_line_pattern( '_', 80 );
     sleep( 1 );
-    barrier();
+    barrier();   // clearing the screen after the introduction
 
+    // returns the player_name
     return player_name;
     
 }
