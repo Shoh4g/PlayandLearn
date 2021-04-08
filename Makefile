@@ -11,10 +11,10 @@ barrier.o: barrier.cpp barrier.h functions.h
 func2.o: func2.cpp func2.h functions.h
 	$(FLAGS) -c func2.cpp
 
-main.o: play_main.cpp func2.h functions.h barrier.h
+play_main.o: play_main.cpp func2.h functions.h barrier.h
 	$(FLAGS) -c play_main.cpp
 
-game: main.o functions.o func2.o barrier.o
+game: play_main.o functions.o func2.o barrier.o
 	$(FLAGS) main.o functions.o func2.o barrier.o -o game
 
 clean:
