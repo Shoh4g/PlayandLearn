@@ -248,6 +248,19 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
                 report[index] = percent;
                 index++;
             }
+
+            data_storing( game_status.health, game_status.heals_left, game_status.score );  //updating status
+            topic_report( file_name, count, correct );  // generating end of the topic report
+
+            //checking if the array size is need to be increased or not
+            if ( index >= arraysize )
+            {
+                grow_array( report, arraysize );
+            }
+
+            string percent = percentage_calculator( count, correct );  // to get percentage for final report
+            report[index] = percent;
+            index++;
             return;   // It returns to the choosing of the topic function
         }
 
@@ -570,7 +583,7 @@ void chemistry_topics( int choice, int * &heal, int size, string * & report, int
 string percentage_calculator( int count, double correct )
 {
     cout << showpoint << fixed << setprecision(2);
-    double percentage = correct / count;
+    double percentage = ( correct / count ) * 100.00 ;
     string percent = to_string(percentage);
     return percent;
 }
@@ -582,25 +595,25 @@ void topic_report( string filename,  int count, double correct )
     system("clear");
     cout << showpoint << fixed << setprecision(2);
     show_status();   // This will show the player name, health, heals, and score
-    double percentage = correct / count;
+    double percentage = ( correct / count ) * 100.00 ;
     cout << "Your Score in " << filename << " is " << percentage << "%" << endl;
 
     // adding comments with respect to score
     if ( percentage < 50.0 )
     {
-        cout << "Practice and revise more next time!\n";
+        cout << "Practice and revise more next time!\n\n";
     }
     else if ( percentage < 70.0 && percentage > 50.0 )
     {
-        cout << "Score could be improved! \n";
+        cout << "Score could be improved! \n\n";
     }
     else if ( percentage < 80.0 && percentage > 70.0 )
     {
-        cout << "Score could be improved! \n";
+        cout << "Score could be improved! \n\n";
     }
     else if ( percentage > 80.0 )
     {
-        cout << "Wow Champ!\n";
+        cout << "Wow Champ!\n\n";
     }    
 
 }
@@ -609,13 +622,16 @@ void topic_report( string filename,  int count, double correct )
 void final_report( string * & report, int index )
 {
     cout << setfill('*');
-    cout << setw(30) << player_name << setw(30) << endl; 
-    cout << setw(30) << "Final Report" << setw(30) << endl; 
+    cout << setw(30) << player_name << setw(30) << "*" << endl; 
+    cout << setw(30) << "Final Report" << setw(30) << "*" << endl;
+    cout << endl; 
     cout << setfill(' ');
     for ( int i = 0; i < index; i += 3)
     {
         cout << setw(20) << report[i] << setw(10) << "|" << setw(10) << report[i + 1] << setw(10) << "|" << setw(5) << report[i + 2] << endl;
     }
+
+    cout << endl << endl;
 }
 
 // This is the main function
@@ -699,7 +715,7 @@ int main()
     if ( flag == true || game_status.health <= 0 || continue_answer == "N" || continue_answer == "n" )  //true flag informs to quit the game
     {
         
-        string end = "Bye Bye! I hope you enjoyed the game!";
+        string end = "Bye Bye! I hope you enjoyed the game!\n\n";
         //report card generator
         final_report( report, report_index_counter );
 
