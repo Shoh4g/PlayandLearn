@@ -15,10 +15,10 @@ play_main.o: play_main.cpp func2.h functions.h barrier.h
 	$(FLAGS) -c play_main.cpp
 
 game: play_main.o functions.o func2.o barrier.o
-	$(FLAGS) main.o functions.o func2.o barrier.o -o game
+	$(FLAGS) play_main.o functions.o func2.o barrier.o -o game
 
 clean:
-	rm -rf game main.o func2.o barrier.o functions.o
+	rm -rf game play_main.o func2.o barrier.o functions.o
 
 .PHONY: clean
 
