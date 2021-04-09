@@ -34,15 +34,15 @@ void typewriter( string, int );
 string to_upper( string str );
 bool barrier2();
 bool healer();
-void grow_array( string * & array, int & size );
-bool heal_deduction_checker( int * & heal, int size );
+void grow_array( string * & array, int & size2 );
+bool heal_deduction_checker( int * & heal, int size2 );
 void data_storing( int health, int heals, int score );
 void show_status();
-void game_play( string correct_answer[20], string file_name, int * & heal, int size, string * & report, int & arraysize, int & index );
-void periodicity ( int choice, int * & heal, int size, string * & report, int & arraysize, int & index );
-void electrochemistry( int choice, int * & heal, int size, string * & report, int & arraysize, int & index );
-void thermochemistry( int choice, int * & heal, int size, string * & report, int & arraysize, int & index );
-void chemistry_topics( int choice, int * &heal, int size, string * & report, int & arraysize, int & index );
+void game_play( string correct_answer[20], string file_name, int * & heal, int size2, string * & report, int & arraysize, int & index );
+void periodicity ( int choice, int * & heal, int size2, string * & report, int & arraysize, int & index );
+void electrochemistry( int choice, int * & heal, int size2, string * & report, int & arraysize, int & index );
+void thermochemistry( int choice, int * & heal, int size2, string * & report, int & arraysize, int & index );
+void chemistry_topics( int choice, int * &heal, int size2, string * & report, int & arraysize, int & index );
 string percentage_calculator( int count, double correct );
 void topic_report( string filename,  int count, double correct );
 void final_report( string * & report, int index );
@@ -72,35 +72,35 @@ struct data game_status;   //making game_status a global variable to be used in 
 // An array size increasing function
 // This function is inspired from largenumber.cpp
 // Mostly for Dynamic Memory Management
-void grow_array( string * & array, int & size )
+void grow_array( string * & array, int & size2 )
 {
     if ( array == NULL )
         return;
 
-    int newSize = size * 2;  // Doubles the size of previous array
+    int newSize = size2 * 2;  // Doubles the size of previous array
 
     // doubled the size of the array;
     string * tmp = new string [ newSize ];   // Creates a new Dynamic Array
     // copy original contents
-    for ( int i = 0; i < size; ++i )
+    for ( int i = 0; i < size2; ++i )
         tmp[i] = array[i];
 
     delete [] array;  // Frees up the space
 
     array = tmp;
-    size = newSize;
+    size2 = newSize;
 }
 
 
 // this function will decide whether to deduct health for using healing or not
 //returns true if health needs to be deducted
-bool heal_deduction_checker( int * & heal, int size )
+bool heal_deduction_checker( int * & heal, int size2 )
 {
     int num = -1;  // Initialising num to -1
 
     // A for loop which checks whether elements of heal array are false or positive
     // false means heal is not used
-    for ( int i = 0; i < size; i++ )
+    for ( int i = 0; i < size2; i++ )
     {
         if ( heal[i] == false )
         {
@@ -185,7 +185,7 @@ void show_status()
 
 // This is a game_play function which takes correct answers array, file name to be opened for questions and heal and its size
 // In this fucntion most of the game is being played and conducted
-void game_play( string correct_answer[20], string file_name, int * & heal, int size, string * & report, int & arraysize, int & index )
+void game_play( string correct_answer[20], string file_name, int * & heal, int size2, string * & report, int & arraysize, int & index )
 {
     string answer;   // To store the anser of the user
     string line;    // To allowing lines from the file to be read
@@ -301,12 +301,12 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
                 else
                 {
                     cout << " Your Guess is wrong :( Better Luck Next Time!\n";
-                    gchecker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
+                    gchecker = heal_deduction_checker( heal, size2 );  //checking whether to deduct points for healing or not
                                                                        // Helath is not deducted for the first two times
                     if ( gchecker == true )
                      {
-                        cout << size * 1 << "health points are decreased from your health\n";  // Deducting points at the wrong guess
-                        game_status.health = game_status.health - (size * 1); 
+                        cout << size2 * 1 << "health points are decreased from your health\n";  // Deducting points at the wrong guess
+                        game_status.health = game_status.health - (size2 * 1); 
                     }
                 }
 
@@ -348,7 +348,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
 //This function gives questions to the player from the respective files according to his choice 
 // of difficulty level of the topic 'Periodicity'
 // It takes choice as an argument to know what difficulty level a person wants, heal array to know about healing and size of the dynamic array
-void periodicity ( int choice, int * & heal, int size, string * & report, int & arraysize, int & index )
+void periodicity ( int choice, int * & heal, int size2, string * & report, int & arraysize, int & index )
 {
 
     // Choice for easy level
@@ -365,7 +365,7 @@ void periodicity ( int choice, int * & heal, int size, string * & report, int & 
         // An array containing correct answers
         string correct_answer[20] = { "C", "B", "IONIZATION-ENERGY", "B", "INCREASES", "B", "NOBLE-METALS", "C", "B", "A", "C", "33", "B", "B", "A", "A", "C", "IODINE", "D", "D" } ;
         string file_name = "periodicity_easy.txt";  // File name
-        game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
+        game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
 
     }
     // Choice for medium level
@@ -382,7 +382,7 @@ void periodicity ( int choice, int * & heal, int size, string * & report, int & 
         // An array containing correct answers
         string correct_answer[20] = {"INCREASES", "D", "C", "B", "C", "18", "B", "B", "D", "C", "A", "2", "D", "6", "C", "D", "ACIDIC", "C", "B", "B"} ;
         string file_name = "periodicity_medium.txt";  //File that contains questions
-        game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
+        game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
 
     }
     // choice for hard level
@@ -399,7 +399,7 @@ void periodicity ( int choice, int * & heal, int size, string * & report, int & 
         // An array containing the correct answers
         string correct_answer[20] = {"C", "DECREASES", "A", "C", "A", "C", "B", "B", "4", "D", "C", "ISOTOPES", "C", "B", "A", "B", "C", "ENDOTHERMIC", "A", "C"} ;
         string file_name = "periodicity_hard.txt";  //File name that contains questions
-        game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
+        game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
  
      }
 }
@@ -413,7 +413,7 @@ void periodicity ( int choice, int * & heal, int size, string * & report, int & 
 //This function gives questions to the player from the respective files according to his choice 
 // of difficulty level of the topic 'Electrochemistry'
 // It takes choice as an argument to know what difficulty level a person wants, heal array to know about healing and size of the dynamic array
-void electrochemistry( int choice, int * & heal, int size, string * & report, int & arraysize, int & index )
+void electrochemistry( int choice, int * & heal, int size2, string * & report, int & arraysize, int & index )
 {
     // choice for easy level
     if ( choice == 1 )
@@ -429,7 +429,7 @@ void electrochemistry( int choice, int * & heal, int size, string * & report, in
         //An array cobtaining correct answers
         string correct_answer[20] = {"REDUCTION", "B", "D", "B", "C", "OXIDATION", "B", "OXIDIZED", "GRAPHITE", "B", "A", "C", "B", "D", "CHEMICAL-ENERGY", "A", "ELECTROPLATING", "C", "A", "0"} ;
         string file_name = "electrochemistry_easy.txt"; //File name having the quetsions
-        game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
+        game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
 
     }
     // choice for medium level
@@ -446,7 +446,7 @@ void electrochemistry( int choice, int * & heal, int size, string * & report, in
         // An array containing the correct answers
         string correct_answer[20] = {"C", "ZINC", "D", "A", "OXIDIZED", "HYDROLYSIS", "A", "A", "B", "C", "OXIDATION", "B", "C", "D", "B", "D", "C", "C", "D", "C"} ;
         string file_name = "electrochemistry_medium.txt";  //file name containing the questions
-        game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
+        game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
 
     }
     //choice for hard level
@@ -463,7 +463,7 @@ void electrochemistry( int choice, int * & heal, int size, string * & report, in
         //An array having the correct answers
         string correct_answer[20] = {"D", "E", "A", "E", "2.7", "A", "D", "5.4", "D", "C", "B", "C", "B", "C", "C", "D", "E", "B", "C", "C"} ;
         string file_name = "electrochemistry_hard.txt";  //file name containing the questions
-        game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
+        game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
 
     }
 }
@@ -476,7 +476,7 @@ void electrochemistry( int choice, int * & heal, int size, string * & report, in
 //This function gives questions to the player from the respective files according to his choice 
 // of difficulty level of the topic 'Therochemistry'
 // It takes choice as an argument to know what difficulty level a person wants, heal array to know about healing and size of the dynamic array
-void thermochemistry( int choice, int * & heal, int size, string * & report, int & arraysize, int & index )
+void thermochemistry( int choice, int * & heal, int size2, string * & report, int & arraysize, int & index )
 {
     // choice for easy level
     if ( choice == 1 )
@@ -492,7 +492,7 @@ void thermochemistry( int choice, int * & heal, int size, string * & report, int
         //An array containing the correct answers
         string correct_answer[20] = {"D", "A", "D", "B", "D", "THERMOCHEMISTRY", "C", "J", "C", "A", "B", "EXOTHERMIC", "A", "B", "D", "D", "D", "GLASS-CALORIMETER", "B", "D"} ;
         string file_name = "thermochemistry_easy.txt";  // file having the questions
-        game_play( correct_answer, file_name, heal, size, report, arraysize, index );  // Playing the game
+        game_play( correct_answer, file_name, heal, size2, report, arraysize, index );  // Playing the game
 
     //choice for medium level 
     }
@@ -509,7 +509,7 @@ void thermochemistry( int choice, int * & heal, int size, string * & report, int
         //An array containing the correct answers
         string correct_answer[20] = {"STATE-FUNCTIONS", "A", "A", "A", "C", "B", "C", "B", "A", "D", "D", "D", "C", "B", "A", "C", "GIBBS-ENERGY", "A", "D", "A"} ;
         string file_name = "thermochemistry_medium.txt"; //file having the questions
-        game_play( correct_answer, file_name, heal, size, report, arraysize, index );  //playing the game
+        game_play( correct_answer, file_name, heal, size2, report, arraysize, index );  //playing the game
 
     }
     // choice for hard level
@@ -526,7 +526,7 @@ void thermochemistry( int choice, int * & heal, int size, string * & report, int
         // An array containing the correct answers
         string correct_answer[20] = {"E", "A", "+30.0", "C", "E", "D", "B", "D", "A", "-581.0", "C", "A", "A", "A", "E", "-140.0", "C", "A", "D", "D"} ;
         string file_name = "thermochemistry_hard.txt"; //file containing the questions
-        game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
+        game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
     }
 
 }
@@ -534,15 +534,15 @@ void thermochemistry( int choice, int * & heal, int size, string * & report, int
 //----------------------------------------------------------------------------------------------------------------
 
 // this function allows you to select the topics you want to practice and test
-void chemistry_topics( int choice, int * &heal, int size, string * & report, int & arraysize, int & index )
+void chemistry_topics( int choice, int * &heal, int size2, string * & report, int & arraysize, int & index )
  {
-    int  difficulty_level;   // To aid in choosing easy, medium, hard
+    string  difficulty_level;   // To aid in choosing easy, medium, hard
     string level_selection = "What difficulty level you want?\n->Press 1 for Easy\n->Press 2 for Medium\n->Press 3 for Hard\n";
     typewriter( level_selection, 150000 );
     cin >> difficulty_level;
 
     // Checking if the key enetered is right or not
-    while ( difficulty_level != 1 && difficulty_level != 2 && difficulty_level != 3 )
+    while ( difficulty_level != "1" && difficulty_level != "2" && difficulty_level != "3" )
     {
         cout << "You entered the wrong key!\n";
         typewriter( level_selection, 150000 );
@@ -550,6 +550,8 @@ void chemistry_topics( int choice, int * &heal, int size, string * & report, int
         cin >> difficulty_level;   //asking for choice again
     }
 
+
+    int difficulty_level2 = stoi( difficulty_level );  //converting it into an integer form
 
     // choice for choosing electrochemistry
     if ( choice == 1 )
@@ -562,7 +564,7 @@ void chemistry_topics( int choice, int * &heal, int size, string * & report, int
 
         report[index] = "Electro-Chemistry";
         index++;
-        electrochemistry( difficulty_level, heal, size, report, arraysize, index );
+        electrochemistry( difficulty_level2, heal, size2, report, arraysize, index );
 
         if ( gflag == true )  //true flag informs to quit the game and tellls to get out of this function
         {
@@ -580,7 +582,7 @@ void chemistry_topics( int choice, int * &heal, int size, string * & report, int
 
         report[index] = "Periodicity";
         index++;        
-        periodicity( difficulty_level, heal, size, report, arraysize, index );
+        periodicity( difficulty_level2, heal, size2, report, arraysize, index );
 
         if ( gflag == true )  //true flag informs to quit the game
         {
@@ -598,7 +600,7 @@ void chemistry_topics( int choice, int * &heal, int size, string * & report, int
 
         report[index] = "Thermo-Chemistry";
         index++;
-        thermochemistry( difficulty_level, heal, size, report, arraysize, index );
+        thermochemistry( difficulty_level2, heal, size2, report, arraysize, index );
 
         if ( gflag == true )  //true flag informs to quit the game
         {
@@ -677,31 +679,33 @@ int main()
 
     //creating dynamic memory to store the number of times healing can be done
     string Dynamic_memory = "How many times you want an opportunity to heal! ( Choose between 3 - 8 times )\n";
-    int size; //getting size of the heal array
+    string size; //getting size of the heal array
 
     typewriter( Dynamic_memory, 150000 );
     cin >> size;
 
     // For checking if selection is within range or not
-    while ( size < 3 || size > 6)
+    while ( size != "7" && size != "8" && size != "3" && size != "4" && size != "5" && size != "6")
     {
         cout << "Guess is out of range! Guess Again\n\n";
         cin.ignore();   //clearing the input stream
         cin >> size;
     }
+
+    int size2 = stoi( size );  //converting topic into an integer
     
-    int * heal = new int [size];   //creating dynamic memory
+    int * heal = new int [ size2 ];   //creating dynamic memory
     
 
     //making all the array false so that it is clear that healing is not yet used! When healing
     // will be used, the false be turned to true
-    for ( int i = 0; i < size; i++ )
+    for ( int i = 0; i < size2; i++ )
     {
         heal[i] = false;
     }
 
 
-    data_storing(50,size,0);  //storing initial data of the player
+    data_storing( 50,size2,0 );  //storing initial data of the player
 
 //--------------------------------------------------------------------------------------------
     //Creating Dynamic array for report production
@@ -713,7 +717,7 @@ int main()
 
 
     //Selecting topic related to chemistry
-    int topic;
+    string topic;
     string topic_selection = "What topics you want to practice and test!\n->Press 1 for Electro-Chemistry\n->Press 2 for Periodicity\n";
     string topic_selection2 = "->Press 3 for Thermo-Chemistry\n";
     string continue_game = "Do want to play again? (Y/N)\n";
@@ -727,7 +731,7 @@ int main()
         cin >> topic;
 
         // Checking if the key enetered is right or not
-        while ( topic != 1 && topic != 2 && topic != 3 )
+        while ( topic != "1" && topic != "2" && topic != "3" )
         {
             cout << "You entered the wrong key!\n";
             typewriter( topic_selection, 150000 );
@@ -736,7 +740,9 @@ int main()
             cin >> topic;
         }
 
-        chemistry_topics( topic, heal, size, report, arraysize, report_index_counter );   // sending heal array as well to keep track of healings
+        int topic2 = stoi( topic );  //converting topic into an integer
+
+        chemistry_topics( topic2, heal, size2, report, arraysize, report_index_counter );   // sending heal array as well to keep track of healings
         // checking flag for quit signal
         if ( gflag == true )
         {
