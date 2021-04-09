@@ -26,6 +26,7 @@ bool healer()
     {
         cout << "You entered the wrong key!\n";
         typewriter( line, 150000 );
+        cin.ignore();  //clearing the input stream
         cin >> s;
     }
 
@@ -55,6 +56,14 @@ bool random_guess()
     typewriter( line, 150000 );
 
     cin >> guess;
+
+    // For checking if guess is in range or not
+    while ( guess < 3 || guess > 6)
+    {
+        cout << "Guess is out of range! Guess Again\n\n";
+        cin.ignore();   //clearing the input stream
+        cin >> guess;
+    }
 
     cout << "Your guess is " << guess << endl << "The Number to be guessed is " << guessGenerator << endl;
     // Checking if guess is correct or not and the return accordingly
