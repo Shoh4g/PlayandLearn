@@ -687,7 +687,8 @@ int main()
     // For checking if selection is within range or not
     while ( size != "7" && size != "8" && size != "3" && size != "4" && size != "5" && size != "6")
     {
-        cout << "Guess is out of range! Guess Again\n\n";
+        cout << "You entered the wrong key!\n";
+        typewriter( Dynamic_memory, 150000 );
         cin.ignore();   //clearing the input stream
         cin >> size;
     }
