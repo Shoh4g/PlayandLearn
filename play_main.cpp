@@ -681,6 +681,15 @@ int main()
 
     typewriter( Dynamic_memory, 150000 );
     cin >> size;
+
+    // For checking if selection is within range or not
+    while ( size < 3 || size > 6)
+    {
+        cout << "Guess is out of range! Guess Again\n\n";
+        cin.ignore();   //clearing the input stream
+        cin >> size;
+    }
+    
     int * heal = new int [size];   //creating dynamic memory
     
 
