@@ -19,9 +19,9 @@ void barrier()
 {
     cout << endl;
     string line = "Please press Enter to continue.....\n";
-    typewriter(line, 150000);  //Typewriter function to give a feel that words are beinhg said/written
+    typewriter( line, 150000 );  //Typewriter function to give a feel that words are beinhg said/written
     cin.get();
-    system("clear");  // Linux command to clear the screen
+    system( "clear" );  // Linux command to clear the screen
 }
 
 
@@ -51,12 +51,12 @@ bool barrier2()
 
     if ( s == 'c' || s == 'C')   // This condition will determine whether to continue or quite
     {
-        system("clear");
+        system( "clear" );
         return false;   // This condition tells to continue the game
     }
     else if ( s == 'q' || s == 'Q')
     {
-        system("clear");
+        system( "clear" );
         return true;
     }
 }

@@ -1,5 +1,10 @@
-// The main file of the Program/Project
+// Authors: Ahmed Masood and Sabyasachi Purkayastha
+// Respective UIDs: 3035812127 and 3035729708
+// Project 1340/2113: Text-Based Game
 
+// This is the main program file where the actual code resides
+
+// The librares that are used
 #include <iostream>
 #include <iomanip>
 #include <time.h>
@@ -10,8 +15,9 @@
 #ifdef _WIN32
 #include <windows.h>
 #else
-#include <unistd.h> //As you are writing for windows, change it into <windows.h>
-#endif
+#include <unistd.h> //Trying to make it compaitable with linux and windows as well but need to change some functions before 
+#endif              // implementig on windows
+
 
 // Adding programmer created header files
 #include "functions.h"  
@@ -20,10 +26,12 @@
 
 using namespace std;
 
+//----------------------------------------------------------------------------------------------------------------
 
-// Creating function declarations
+
+// Making function declarations
 void typewriter( string, int );
-string toUpper( string str );
+string to_upper( string str );
 bool barrier2();
 bool healer();
 void grow_array( string * & array, int & size );
@@ -39,12 +47,14 @@ string percentage_calculator( int count, double correct );
 void topic_report( string filename,  int count, double correct );
 void final_report( string * & report, int index );
 
+//----------------------------------------------------------------------------------------------------------------
 
-// creating global variables that are being used in whole program
-string player_name;
-bool flag = false, healing, dice_guess = false, checker;    //added to detrmine whether to quit the game or not
+// Declaring global variables that are being used in whole program
+// The name of the global variables start with g example gplayer_name
+string gplayer_name;
+bool gflag = false, ghealing, gdice_guess = false, gchecker;    //added to detrmine whether to quit the game or not
 
-
+//----------------------------------------------------------------------------------------------------------------
 
 //creating a struct to store various data of the game
 //name will store the name of the player, his health, his heals_left, and his score
@@ -54,33 +64,35 @@ struct data{
 };
 
 
-struct data game_status;   //making game_status a global variable to be used in the whole program
+struct data game_status;   //making game_status a global variable to be used in the whole program. It does not have a g before the name
 
+//----------------------------------------------------------------------------------------------------------------
 
 
 // An array size increasing function
 // This function is inspired from largenumber.cpp
+// Mostly for Dynamic Memory Management
 void grow_array( string * & array, int & size )
 {
-    if (array == NULL)
+    if ( array == NULL )
         return;
 
-    int newSize = size * 2;
+    int newSize = size * 2;  // Doubles the size of previous array
 
     // doubled the size of the array;
-    string * tmp = new string [ newSize ];
+    string * tmp = new string [ newSize ];   // Creates a new Dynamic Array
     // copy original contents
-    for (int i = 0; i < size; ++i)
+    for ( int i = 0; i < size; ++i )
         tmp[i] = array[i];
 
-    delete [] array;
+    delete [] array;  // Frees up the space
 
     array = tmp;
     size = newSize;
 }
 
 
-// will decide whether to deduct health for using healing or not
+// this function will decide whether to deduct health for using healing or not
 //returns true if health needs to be deducted
 bool heal_deduction_checker( int * & heal, int size )
 {
@@ -125,13 +137,13 @@ void data_storing( int health, int heals, int score )
     }
 
     // assigning values to various variables of struct data structure
-    game_status.name = player_name;
+    game_status.name = gplayer_name;
     game_status.health = health;
     game_status.heals_left = heals;
     game_status.score = score;
 
     // sends data to to the file to be retrived later
-    getdata << "Player Name: " << player_name << endl << "Current Health: " << health << endl;
+    getdata << "Player Name: " << gplayer_name << endl << "Current Health: " << health << endl;
     getdata << "Heals Left: " << heals << endl << "Current Score: " << score << endl;
 
     getdata.close();   // closes the file
@@ -168,6 +180,7 @@ void show_status()
 
 }
 
+//----------------------------------------------------------------------------------------------------------------
 
 
 // This is a game_play function which takes correct answers array, file name to be opened for questions and heal and its size
@@ -190,6 +203,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
     }
 
     // A loop that reads the complete file
+    // From this respective file, Questions are selected
     while ( !read.eof() )
     {
         getline( read, line );
@@ -202,22 +216,21 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
         cin >> answer;     // taking answers from the user
 
 
-        //converting into uppercase
-        answer = toUpper( answer );
+        //converting answer into uppercase to counter check with actual answers
+        answer = to_upper( answer );
 
-        //checking correctness of the asnwer
 
         // To check if the answer is correct or not
         if ( answer == correct_answer[count])
         {
-            cout << " Yipeee!! Answer is Correct\n";
+            cout << " Yipeee!! Answer is Correct\n";   // Correct Answer increases score and correct count
             game_status.score++; 
             correct++;              
         }
         else
         {
             cout << "Wrong Answer!\n";
-            cout << "Correct Answer was " << correct_answer[count] << endl;
+            cout << "Correct Answer was " << correct_answer[count] << endl;  // Wrong Answer decreases health 
             game_status.health = game_status.health - 2;
             
         }
@@ -227,11 +240,13 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
         // Updating the scores in status.txt
         data_storing( game_status.health, game_status.heals_left, game_status.score );
         show_status();  // showing current status
-        flag = barrier2();  // Asking if person wants to quit or to play... if flag becomes true quit the game
+        gflag = barrier2();  // Asking if person wants to quit or to play... if flag becomes true quit the game
 
         // Considering when to quit the game
-        if ( flag == true || game_status.health <= 0 )
+        // Game is quited when health is less than 0 or player has pressed q
+        if ( gflag == true || game_status.health <= 0 )
         {
+            // When no health is left
             if ( game_status.health <= 0 )
             {
                 cout << " You have no health left :( Sorry You can't play more\n";
@@ -241,11 +256,11 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
                 //checking if the array size is need to be increased or not
                 if ( index >= arraysize )
                 {
-                    grow_array( report, arraysize );
+                    grow_array( report, arraysize );  // Increasing the array size
                 }
 
                 string percent = percentage_calculator( count, correct );  // to get percentage for final report
-                report[index] = percent;
+                report[index] = percent;  // Updating the report array with new score
                 index++;
             }
 
@@ -267,30 +282,31 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
         //asking for heals
         if ( game_status.heals_left != 0 )   // If heals left are not zero
         {
-            healing = healer();   // Calling the function and letting it know that whether to deduct points or not
+            ghealing = healer();   // Calling the function and letting it know that whether to deduct points or not
 
-            if ( healing == true )   // Meaning healing is used by the user
+            if ( ghealing == true )   // Meaning healing is used by the user
             {
                 game_status.heals_left = game_status.heals_left - 1;   //decreasing used heals
                 data_storing( game_status.health, game_status.heals_left, game_status.score );  //updating status
 
                 //checking if guess is matched or not
-                dice_guess = random_guess();
+                gdice_guess = random_guess();
 
                 // if guess is true
-                if ( dice_guess ==  true )
+                if ( gdice_guess ==  true )
                 {
-                    cout << "Your Guess is right! Yipee! You get 10 health points!!\n";
+                    cout << "Your Guess is right! Yipee! You get 10 health points!!\n";  // If Guess matches  10 health points increase
                     game_status.health += 10;
                 }
                 else
                 {
                     cout << " Your Guess is wrong :( Better Luck Next Time!\n";
-                    checker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
-                    if ( checker == true )
+                    gchecker = heal_deduction_checker( heal, size );  //checking whether to deduct points for healing or not
+                                                                       // Helath is not deducted for the first two times
+                    if ( gchecker == true )
                      {
-                        cout << size * 1 << "health points are decreased from your health\n";
-                        game_status.health = game_status.health - (size * 1);
+                        cout << size * 1 << "health points are decreased from your health\n";  // Deducting points at the wrong guess
+                        game_status.health = game_status.health - (size * 1); 
                     }
                 }
 
@@ -299,6 +315,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
             }
         }
 
+        // When questions are finished
         if ( count == 20 )
         {
             topic_report( file_name, count, correct );  // generating end of the topic report
@@ -319,6 +336,8 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
     read.close();   // clsoing the file in the end
 
 }
+
+//----------------------------------------------------------------------------------------------------------------
 
 
 // The websites from where the questions are taken
@@ -343,8 +362,9 @@ void periodicity ( int choice, int * & heal, int size, string * & report, int & 
 
         report[index] = "Easy";
         index++;
+        // An array containing correct answers
         string correct_answer[20] = { "C", "B", "IONIZATION-ENERGY", "B", "INCREASES", "B", "NOBLE-METALS", "C", "B", "A", "C", "33", "B", "B", "A", "A", "C", "IODINE", "D", "D" } ;
-        string file_name = "periodicity_easy.txt";
+        string file_name = "periodicity_easy.txt";  // File name
         game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
 
     }
@@ -359,8 +379,9 @@ void periodicity ( int choice, int * & heal, int size, string * & report, int & 
 
         report[index] = "Medium";
         index++;
+        // An array containing correct answers
         string correct_answer[20] = {"INCREASES", "D", "C", "B", "C", "18", "B", "B", "D", "C", "A", "2", "D", "6", "C", "D", "ACIDIC", "C", "B", "B"} ;
-        string file_name = "periodicity_medium.txt";
+        string file_name = "periodicity_medium.txt";  //File that contains questions
         game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
 
     }
@@ -375,8 +396,9 @@ void periodicity ( int choice, int * & heal, int size, string * & report, int & 
 
         report[index] = "Hard";
         index++;
+        // An array containing the correct answers
         string correct_answer[20] = {"C", "DECREASES", "A", "C", "A", "C", "B", "B", "4", "D", "C", "ISOTOPES", "C", "B", "A", "B", "C", "ENDOTHERMIC", "A", "C"} ;
-        string file_name = "periodicity_hard.txt";
+        string file_name = "periodicity_hard.txt";  //File name that contains questions
         game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
  
      }
@@ -404,8 +426,9 @@ void electrochemistry( int choice, int * & heal, int size, string * & report, in
 
         report[index] = "Easy";
         index++;
+        //An array cobtaining correct answers
         string correct_answer[20] = {"REDUCTION", "B", "D", "B", "C", "OXIDATION", "B", "OXIDIZED", "GRAPHITE", "B", "A", "C", "B", "D", "CHEMICAL-ENERGY", "A", "ELECTROPLATING", "C", "A", "0"} ;
-        string file_name = "electrochemistry_easy.txt";
+        string file_name = "electrochemistry_easy.txt"; //File name having the quetsions
         game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
 
     }
@@ -420,8 +443,9 @@ void electrochemistry( int choice, int * & heal, int size, string * & report, in
 
         report[index] = "Medium";
         index++;
+        // An array containing the correct answers
         string correct_answer[20] = {"C", "ZINC", "D", "A", "OXIDIZED", "HYDROLYSIS", "A", "A", "B", "C", "OXIDATION", "B", "C", "D", "B", "D", "C", "C", "D", "C"} ;
-        string file_name = "electrochemistry_medium.txt";
+        string file_name = "electrochemistry_medium.txt";  //file name containing the questions
         game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
 
     }
@@ -436,8 +460,9 @@ void electrochemistry( int choice, int * & heal, int size, string * & report, in
 
         report[index] = "Hard";
         index++;
+        //An array having the correct answers
         string correct_answer[20] = {"D", "E", "A", "E", "2.7", "A", "D", "5.4", "D", "C", "B", "C", "B", "C", "C", "D", "E", "B", "C", "C"} ;
-        string file_name = "electrochemistry_hard.txt";
+        string file_name = "electrochemistry_hard.txt";  //file name containing the questions
         game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
 
     }
@@ -464,8 +489,9 @@ void thermochemistry( int choice, int * & heal, int size, string * & report, int
 
         report[index] = "Easy";
         index++;
+        //An array containing the correct answers
         string correct_answer[20] = {"D", "A", "D", "B", "D", "THERMOCHEMISTRY", "C", "J", "C", "A", "B", "EXOTHERMIC", "A", "B", "D", "D", "D", "GLASS-CALORIMETER", "B", "D"} ;
-        string file_name = "thermochemistry_easy.txt";
+        string file_name = "thermochemistry_easy.txt";  // file having the questions
         game_play( correct_answer, file_name, heal, size, report, arraysize, index );  // Playing the game
 
     //choice for medium level 
@@ -480,8 +506,9 @@ void thermochemistry( int choice, int * & heal, int size, string * & report, int
 
         report[index] = "Medium";
         index++;
+        //An array containing the correct answers
         string correct_answer[20] = {"STATE-FUNCTIONS", "A", "A", "A", "C", "B", "C", "B", "A", "D", "D", "D", "C", "B", "A", "C", "GIBBS-ENERGY", "A", "D", "A"} ;
-        string file_name = "thermochemistry_medium.txt";
+        string file_name = "thermochemistry_medium.txt"; //file having the questions
         game_play( correct_answer, file_name, heal, size, report, arraysize, index );  //playing the game
 
     }
@@ -496,13 +523,15 @@ void thermochemistry( int choice, int * & heal, int size, string * & report, int
         
         report[index] = "Hard";
         index++;
+        // An array containing the correct answers
         string correct_answer[20] = {"E", "A", "+30.0", "C", "E", "D", "B", "D", "A", "-581.0", "C", "A", "A", "A", "E", "-140.0", "C", "A", "D", "D"} ;
-        string file_name = "thermochemistry_hard.txt";
+        string file_name = "thermochemistry_hard.txt"; //file containing the questions
         game_play( correct_answer, file_name, heal, size, report, arraysize, index );   // Playing the game
     }
 
 }
 
+//----------------------------------------------------------------------------------------------------------------
 
 // this function allows you to select the topics you want to practice and test
 void chemistry_topics( int choice, int * &heal, int size, string * & report, int & arraysize, int & index )
@@ -517,7 +546,7 @@ void chemistry_topics( int choice, int * &heal, int size, string * & report, int
     {
         cout << "You entered the wrong key!\n";
         typewriter( level_selection, 150000 );
-        cin >> difficulty_level;
+        cin >> difficulty_level;   //asking for choice again
     }
 
 
@@ -534,7 +563,7 @@ void chemistry_topics( int choice, int * &heal, int size, string * & report, int
         index++;
         electrochemistry( difficulty_level, heal, size, report, arraysize, index );
 
-        if ( flag == true )  //true flag informs to quit the game
+        if ( gflag == true )  //true flag informs to quit the game and tellls to get out of this function
         {
             return;
         }
@@ -552,7 +581,7 @@ void chemistry_topics( int choice, int * &heal, int size, string * & report, int
         index++;        
         periodicity( difficulty_level, heal, size, report, arraysize, index );
 
-        if ( flag == true )  //true flag informs to quit the game
+        if ( gflag == true )  //true flag informs to quit the game
         {
             return;
         }
@@ -570,7 +599,7 @@ void chemistry_topics( int choice, int * &heal, int size, string * & report, int
         index++;
         thermochemistry( difficulty_level, heal, size, report, arraysize, index );
 
-        if ( flag == true )  //true flag informs to quit the game
+        if ( gflag == true )  //true flag informs to quit the game
         {
             return;
         }
@@ -578,13 +607,14 @@ void chemistry_topics( int choice, int * &heal, int size, string * & report, int
 }
 
 
+//----------------------------------------------------------------------------------------------------------------
 
 // A function that returns percentage score in the form of string
 string percentage_calculator( int count, double correct )
 {
-    cout << showpoint << fixed << setprecision(2);
-    double percentage = ( correct / count ) * 100.00 ;
-    string percent = to_string(percentage);
+    cout << showpoint << fixed << setprecision(2);   //Fixing the percision of show
+    double percentage = ( correct / count ) * 100.00 ;  //calculating the percentage 
+    string percent = to_string( percentage );   //converting percentage into string
     return percent;
 }
 
@@ -592,10 +622,10 @@ string percentage_calculator( int count, double correct )
 //This will print the end of the topic score report
 void topic_report( string filename,  int count, double correct )
 {
-    system("clear");
-    cout << showpoint << fixed << setprecision(2);
+    system( "clear" );
+    cout << showpoint << fixed << setprecision(2);  //Setting up the precision
     show_status();   // This will show the player name, health, heals, and score
-    double percentage = ( correct / count ) * 100.00 ;
+    double percentage = ( correct / count ) * 100.00 ;  //calculating the percentage
     cout << "Your Score in " << filename << " is " << percentage << "%" << endl;
 
     // adding comments with respect to score
@@ -621,11 +651,13 @@ void topic_report( string filename,  int count, double correct )
 // This wil print the final report of the player
 void final_report( string * & report, int index )
 {
-    cout << setfill('*');
-    cout << setw(30) << player_name << setw(30) << "*" << endl; 
+    cout << setfill('*');  // filling the mepty white spaces with *
+    cout << setw(30) << gplayer_name << setw(30) << "*" << endl; 
     cout << setw(30) << "Final Report" << setw(30) << "*" << endl;
     cout << endl; 
     cout << setfill(' ');
+
+    //printing scores
     for ( int i = 0; i < index; i += 3)
     {
         cout << setw(20) << report[i] << setw(10) << "|" << setw(10) << report[i + 1] << setw(10) << "|" << setw(5) << report[i + 2] << endl;
@@ -634,10 +666,13 @@ void final_report( string * & report, int index )
     cout << endl << endl;
 }
 
+//----------------------------------------------------------------------------------------------------------------
+
+
 // This is the main function
 int main()
 {
-    player_name = introduction();   // Stores the player name
+    gplayer_name = introduction();   // Stores the player name
 
     //creating dynamic memory to store the number of times healing can be done
     string Dynamic_memory = "How many times you want an opportunity to heal! ( Choose between 3 - 8 times )\n";
@@ -692,7 +727,7 @@ int main()
 
         chemistry_topics( topic, heal, size, report, arraysize, report_index_counter );   // sending heal array as well to keep track of healings
         // checking flag for quit signal
-        if ( flag == true )
+        if ( gflag == true )
         {
             break;  // break the loop
         }
@@ -712,7 +747,7 @@ int main()
 
 
 
-    if ( flag == true || game_status.health <= 0 || continue_answer == "N" || continue_answer == "n" )  //true flag informs to quit the game
+    if ( gflag == true || game_status.health <= 0 || continue_answer == "N" || continue_answer == "n" )  //true flag informs to quit the game
     {
         
         string end = "Bye Bye! I hope you enjoyed the game!\n\n";

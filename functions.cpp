@@ -24,7 +24,7 @@ using namespace std;
 
 //A function to convert everything to uppercase from lowercase
 // It takes the string as an input and returns that string converted into upper case
-string toUpper( string str )
+string to_upper( string str )
 {
     // A loop that runs till the end of the string so that all the string is converted to uppercase
     for ( int i = 0; i < str.length(); i++ )
