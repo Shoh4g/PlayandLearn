@@ -546,6 +546,7 @@ void chemistry_topics( int choice, int * &heal, int size, string * & report, int
     {
         cout << "You entered the wrong key!\n";
         typewriter( level_selection, 150000 );
+        cin.ignore();  //clearing the input stream
         cin >> difficulty_level;   //asking for choice again
     }
 
@@ -722,6 +723,7 @@ int main()
             cout << "You entered the wrong key!\n";
             typewriter( topic_selection, 150000 );
             typewriter( topic_selection2, 150000 );
+            cin.ignore();  //clearing the input stream
             cin >> topic;
         }
 
@@ -733,6 +735,7 @@ int main()
         }
 
         typewriter( continue_game, 150000 );
+        cin.ignore();  //clearing the input stream
         cin >> continue_answer;
 
         // Checking if the key enetered is right or not
@@ -740,6 +743,7 @@ int main()
         {
             cout << "You entered the wrong key!\n";
             typewriter( continue_game, 150000 );
+            cin.ignore();  //clearing the input stream
             cin >> continue_answer;
         }
 

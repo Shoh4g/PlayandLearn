@@ -45,6 +45,7 @@ bool barrier2()
     {
         cout << "You entered the wrong key!\n";
         typewriter( line, 150000 );
+        cin.ignore();  //clearing the input stream
         cin >> s;
     }
 
