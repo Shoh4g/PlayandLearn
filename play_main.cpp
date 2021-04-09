@@ -11,6 +11,7 @@
 #include <ctime>
 #include <fstream>
 #include <string>
+#include <cstdlib>  //for calling srand and rand functions
 
 #ifdef _WIN32
 #include <windows.h>
@@ -364,7 +365,7 @@ void periodicity ( int choice, int * & heal, int size2, string * & report, int &
         index++;
         // An array containing correct answers
         string correct_answer[20] = { "C", "B", "IONIZATION-ENERGY", "B", "INCREASES", "B", "NOBLE-METALS", "C", "B", "A", "C", "33", "B", "B", "A", "A", "C", "IODINE", "D", "D" } ;
-        string file_name = "periodicity_easy.txt";  // File name
+        string file_name = "Periodicity_Easy.txt";  // File name
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
 
     }
@@ -381,7 +382,7 @@ void periodicity ( int choice, int * & heal, int size2, string * & report, int &
         index++;
         // An array containing correct answers
         string correct_answer[20] = {"INCREASES", "D", "C", "B", "C", "18", "B", "B", "D", "C", "A", "2", "D", "6", "C", "D", "ACIDIC", "C", "B", "B"} ;
-        string file_name = "periodicity_medium.txt";  //File that contains questions
+        string file_name = "Periodicity_Medium.txt";  //File that contains questions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
 
     }
@@ -398,7 +399,7 @@ void periodicity ( int choice, int * & heal, int size2, string * & report, int &
         index++;
         // An array containing the correct answers
         string correct_answer[20] = {"C", "DECREASES", "A", "C", "A", "C", "B", "B", "4", "D", "C", "ISOTOPES", "C", "B", "A", "B", "C", "ENDOTHERMIC", "A", "C"} ;
-        string file_name = "periodicity_hard.txt";  //File name that contains questions
+        string file_name = "Periodicity_Hard.txt";  //File name that contains questions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
  
      }
@@ -428,7 +429,7 @@ void electrochemistry( int choice, int * & heal, int size2, string * & report, i
         index++;
         //An array cobtaining correct answers
         string correct_answer[20] = {"REDUCTION", "B", "D", "B", "C", "OXIDATION", "B", "OXIDIZED", "GRAPHITE", "B", "A", "C", "B", "D", "CHEMICAL-ENERGY", "A", "ELECTROPLATING", "C", "A", "0"} ;
-        string file_name = "electrochemistry_easy.txt"; //File name having the quetsions
+        string file_name = "Electrochemistry_Easy.txt"; //File name having the quetsions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
 
     }
@@ -445,7 +446,7 @@ void electrochemistry( int choice, int * & heal, int size2, string * & report, i
         index++;
         // An array containing the correct answers
         string correct_answer[20] = {"C", "ZINC", "D", "A", "OXIDIZED", "HYDROLYSIS", "A", "A", "B", "C", "OXIDATION", "B", "C", "D", "B", "D", "C", "C", "D", "C"} ;
-        string file_name = "electrochemistry_medium.txt";  //file name containing the questions
+        string file_name = "Electrochemistry_Medium.txt";  //file name containing the questions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
 
     }
@@ -462,7 +463,7 @@ void electrochemistry( int choice, int * & heal, int size2, string * & report, i
         index++;
         //An array having the correct answers
         string correct_answer[20] = {"D", "E", "A", "E", "2.7", "A", "D", "5.4", "D", "C", "B", "C", "B", "C", "C", "D", "E", "B", "C", "C"} ;
-        string file_name = "electrochemistry_hard.txt";  //file name containing the questions
+        string file_name = "Electrochemistry_Hard.txt";  //file name containing the questions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
 
     }
@@ -491,7 +492,7 @@ void thermochemistry( int choice, int * & heal, int size2, string * & report, in
         index++;
         //An array containing the correct answers
         string correct_answer[20] = {"D", "A", "D", "B", "D", "THERMOCHEMISTRY", "C", "J", "C", "A", "B", "EXOTHERMIC", "A", "B", "D", "D", "D", "GLASS-CALORIMETER", "B", "D"} ;
-        string file_name = "thermochemistry_easy.txt";  // file having the questions
+        string file_name = "Thermochemistry_Easy.txt";  // file having the questions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );  // Playing the game
 
     //choice for medium level 
@@ -508,7 +509,7 @@ void thermochemistry( int choice, int * & heal, int size2, string * & report, in
         index++;
         //An array containing the correct answers
         string correct_answer[20] = {"STATE-FUNCTIONS", "A", "A", "A", "C", "B", "C", "B", "A", "D", "D", "D", "C", "B", "A", "C", "GIBBS-ENERGY", "A", "D", "A"} ;
-        string file_name = "thermochemistry_medium.txt"; //file having the questions
+        string file_name = "Thermochemistry_Medium.txt"; //file having the questions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );  //playing the game
 
     }
@@ -525,7 +526,7 @@ void thermochemistry( int choice, int * & heal, int size2, string * & report, in
         index++;
         // An array containing the correct answers
         string correct_answer[20] = {"E", "A", "+30.0", "C", "E", "D", "B", "D", "A", "-581.0", "C", "A", "A", "A", "E", "-140.0", "C", "A", "D", "D"} ;
-        string file_name = "thermochemistry_hard.txt"; //file containing the questions
+        string file_name = "Thermochemistry_Hard.txt"; //file containing the questions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
     }
 
@@ -628,7 +629,14 @@ void topic_report( string filename,  int count, double correct )
     system( "clear" );
     cout << showpoint << fixed << setprecision(2);  //Setting up the precision
     show_status();   // This will show the player name, health, heals, and score
+    cout << endl << endl;
     double percentage = ( correct / count ) * 100.00 ;  //calculating the percentage
+    int index = filename.find('.');
+    filename = filename.erase( index, 4 );
+    index = filename.find("_");
+    filename = filename.erase( index, 1 );
+    filename = filename.insert( index, " ");
+    cout << "The Topic ended!\n\n";
     cout << "Your Score in " << filename << " is " << percentage << "%" << endl;
 
     // adding comments with respect to score
@@ -663,7 +671,7 @@ void final_report( string * & report, int index )
     //printing scores
     for ( int i = 0; i < index; i += 3)
     {
-        cout << setw(20) << report[i] << setw(10) << "|" << setw(10) << report[i + 1] << setw(10) << "|" << setw(5) << report[i + 2] << endl;
+        cout << setw(20) << report[i] << setw(10) << "|" << setw(10) << report[i + 1] << setw(10) << "|" << setw(5) << report[i + 2] << "%" << endl;
     }
 
     cout << endl << endl;
