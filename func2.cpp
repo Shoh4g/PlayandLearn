@@ -48,33 +48,27 @@ bool healer()
 bool random_guess()
 {
     srand( time( NULL ) );   // initialising the seed
-    int guess;
+    string guess2;
     int guessGenerator = ( rand() % 6 )+ 1;   // generating a random number
     cout << endl;
     string line = "Guess a number between 1 to 6\n";
     typewriter( line, 5000 );
 
-    cin >> guess;
+    cin >> guess2;
     bool score=true;
     
     while (score==true)
     {
-        if (guess==1 && guess ==2 && guess==3 && guess ==4 && guess==5 && guess ==6 && isdigit(guess)==true)
+        if (guess2=="1" && guess2 =="2" && guess2=="3" && guess2 =="4" && guess2=="5" && guess2 =="6")
         {
             score=false;
         }
         
         cout<< "Invalid input! The number entered should be between 1 to 6.\n";
-        cin >> guess;
-        
-        //if (isdigit(guess)==false)
-        //{
-            //cout<< "Invalid input! The number entered should be between 1 to 6.\n";
-            //cin >> guess;    
-        //}
-            
+        cin >> guess2;
     }
 
+    int guess= stoi(guess2);
     cout << "Your guess is " << guess << endl << "The Number to be guessed is " << guessGenerator << endl;
     // Checking if guess is correct or not and the return accordingly
     if ( guess == guessGenerator )
