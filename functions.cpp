@@ -181,18 +181,18 @@ string introduction()
     print_line_pattern( '_', 80 );
     sleep( 1 );
 	
-    char option;
-    cout<< "Do you want to know how the game works, by reading the introduction? Or do you want to skip it? Press Y to read or N to skip".
+    string option;
+    cout<< "Do you want to know how the game works, by reading the introduction? Or do you want to skip it? Press Y to read or N to skip";
     cin>> option;
     
-    while ( option!='y' && option!='Y' && option!='N' && option !='n')
+    while ( option!="y" && option!="Y" && option!="N" && option !="n")
     {
 	    cout << "Invalid answer! Please enter (Y/N).\n";
 	    cin.ignore();
 	    cin >> option;	    
     }
    	
-   if (option='Y' || option=='y')
+   if (option="Y" || option=="y")
    { 
  	
 	
