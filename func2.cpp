@@ -15,17 +15,17 @@ void typewriter( string str, int time );
 //It returns true when a person wants to use healing chance
 bool healer()
 {
-    char s;   // to get input from the user
+    char s;   // Take user input
     cout << endl;
-    string line = "Do you want to heal or not (Y/N)\n";
-    typewriter( line, 150000 );
+    string line = "Do you want to heal? (Y/N)\n";
+    typewriter( line, 5000 );
     cin >> s;
 
-    // Checking if the key enetered is right or not
+    // Checking if the key entered is right or not
     while ( s != 'y' && s != 'Y' && s != 'n' && s != 'N' )
     {
-        cout << "You entered the wrong key!\n";
-        typewriter( line, 150000 );
+        cout << "Invalid answer! Please enter Y or N.\n";
+        typewriter( line, 5000 );
         cin.ignore();  //clearing the input stream
         cin >> s;
     }
@@ -35,10 +35,9 @@ bool healer()
     {
         return true;
     }
-    else if ( s == 'N' || s == 'n' )
-    {
-        return false;
-    }
+    // If n or N is pressed, it tells that healing is not needed
+    return false;
+
 
 }
 
@@ -53,7 +52,7 @@ bool random_guess()
     int guessGenerator = ( rand() % 6 )+ 1;   // generating a random number
     cout << endl;
     string line = "Guess a number between 1 to 6\n";
-    typewriter( line, 150000 );
+    typewriter( line, 50000 );
 
     cin >> guess;
 
@@ -63,9 +62,7 @@ bool random_guess()
     {
         return true;
     }
-    else
-    {
         return false;
-    }
+
     
 }
