@@ -115,10 +115,8 @@ bool heal_deduction_checker( int * & heal, int size2 )
     {
         return false;   // It returns false meaning health should not be deducted before 2 heals are done
     }
-    else
-    {
-        return true;
-    }
+
+    return true;
 
 }
 
@@ -224,14 +222,14 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
         // To check if the answer is correct or not
         if ( answer == correct_answer[count])
         {
-            cout << " Yipeee!! Answer is Correct\n";   // Correct Answer increases score and correct count
+            cout << " Correct answer! Good job :)\n";   // Correct Answer increases score and correct count
             game_status.score++; 
             correct++;              
         }
         else
         {
-            cout << "Wrong Answer!\n";
-            cout << "Correct Answer was " << correct_answer[count] << endl;  // Wrong Answer decreases health 
+            cout << " That was incorrect :( Better luck next time! \n";
+            cout << "The right answer is " << correct_answer[count] << endl;  // Wrong Answer decreases health 
             game_status.health = game_status.health - 2;
             
         }
@@ -296,17 +294,17 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
                 // if guess is true
                 if ( gdice_guess ==  true )
                 {
-                    cout << "Your Guess is right! Yipee! You get 10 health points!!\n";  // If Guess matches  10 health points increase
+                    cout << "You've guessed correctly! Your health point increases by 10 :) \n";  // If Guess matches  10 health points increase
                     game_status.health += 10;
                 }
                 else
                 {
-                    cout << " Your Guess is wrong :( Better Luck Next Time!\n";
+                    cout << " Sadly, the guest is incorrect! Good luck for next time. \n";
                     gchecker = heal_deduction_checker( heal, size2 );  //checking whether to deduct points for healing or not
                                                                        // Helath is not deducted for the first two times
                     if ( gchecker == true )
                      {
-                        cout << size2 * 1 << "health points are decreased from your health\n";  // Deducting points at the wrong guess
+                        cout << size2 << "health points are deducted from your total health\n";  // Deducting points at the wrong guess
                         game_status.health = game_status.health - (size2 * 1); 
                     }
                 }
@@ -539,14 +537,14 @@ void chemistry_topics( int choice, int * &heal, int size2, string * & report, in
  {
     string  difficulty_level;   // To aid in choosing easy, medium, hard
     string level_selection = "What difficulty level you want?\n->Press 1 for Easy\n->Press 2 for Medium\n->Press 3 for Hard\n";
-    typewriter( level_selection, 150000 );
+    typewriter( level_selection, 5000 );
     cin >> difficulty_level;
 
     // Checking if the key enetered is right or not
     while ( difficulty_level != "1" && difficulty_level != "2" && difficulty_level != "3" )
     {
-        cout << "You entered the wrong key!\n";
-        typewriter( level_selection, 150000 );
+        cout << "Invalid answer! Please enter 1/2/3. \n";
+        typewriter( level_selection, 5000 );
         cin.ignore();  //clearing the input stream
         cin >> difficulty_level;   //asking for choice again
     }
@@ -642,19 +640,19 @@ void topic_report( string filename,  int count, double correct )
     // adding comments with respect to score
     if ( percentage < 50.0 )
     {
-        cout << "Practice and revise more next time!\n\n";
+        cout << "We know that your score is not satisfactory but that doesn't mean that you can't do better. Keep practicing and believe in yourself. You are going to do better :).\n\n";
     }
     else if ( percentage < 70.0 && percentage > 50.0 )
     {
-        cout << "Score could be improved! \n\n";
+        cout << "Well, we are pretty sure that you have the ability to do much better. Practice and see the results :).  \n\n";
     }
     else if ( percentage < 80.0 && percentage > 70.0 )
     {
-        cout << "Score could be improved! \n\n";
+        cout << "Your score is above average, but keep putting in the effort and within no time you are going to be among the best. \n\n";
     }
     else if ( percentage > 80.0 )
     {
-        cout << "Wow Champ!\n\n";
+        cout << "Impressive. Seems like you have a very good understanding of chemistry. Well done and smash the exams! \n\n";
     }    
 
 }
@@ -689,14 +687,14 @@ int main()
     string Dynamic_memory = "How many times you want an opportunity to heal! ( Choose between 3 - 8 times )\n";
     string size; //getting size of the heal array
 
-    typewriter( Dynamic_memory, 150000 );
+    typewriter( Dynamic_memory, 5000 );
     cin >> size;
 
     // For checking if selection is within range or not
     while ( size != "7" && size != "8" && size != "3" && size != "4" && size != "5" && size != "6")
     {
-        cout << "You entered the wrong key!\n";
-        typewriter( Dynamic_memory, 150000 );
+        cout << "Invalid answer! Please enter a number between 3 to 8 inclusive. \n";
+        typewriter( Dynamic_memory, 5000 );
         cin.ignore();   //clearing the input stream
         cin >> size;
     }
@@ -735,16 +733,16 @@ int main()
     // adding a do while loop for asking game and continuing it
     do
     {
-        typewriter( topic_selection, 150000 );
-        typewriter( topic_selection2, 150000 );
+        typewriter( topic_selection, 5000 );
+        typewriter( topic_selection2, 5000 );
         cin >> topic;
 
         // Checking if the key enetered is right or not
         while ( topic != "1" && topic != "2" && topic != "3" )
         {
-            cout << "You entered the wrong key!\n";
-            typewriter( topic_selection, 150000 );
-            typewriter( topic_selection2, 150000 );
+            cout << "Invalid answer! Please press 1/2/3. \n";
+            typewriter( topic_selection, 5000 );
+            typewriter( topic_selection2, 5000 );
             cin.ignore();  //clearing the input stream
             cin >> topic;
         }
@@ -758,15 +756,15 @@ int main()
             break;  // break the loop
         }
 
-        typewriter( continue_game, 150000 );
+        typewriter( continue_game, 5000 );
         cin.ignore();  //clearing the input stream
         cin >> continue_answer;
 
         // Checking if the key enetered is right or not
-        while ( continue_answer != "y" && continue_answer != "y" && continue_answer != "n" && continue_answer != "N" )
+        while ( continue_answer != "y" && continue_answer != "Y" && continue_answer != "n" && continue_answer != "N" )
         {
-            cout << "You entered the wrong key!\n";
-            typewriter( continue_game, 150000 );
+            cout << "Invalid answer! Please enter Y or N. \n";
+            typewriter( continue_game, 5000 );
             cin.ignore();  //clearing the input stream
             cin >> continue_answer;
         }
@@ -778,12 +776,12 @@ int main()
     if ( gflag == true || game_status.health <= 0 || continue_answer == "N" || continue_answer == "n" )  //true flag informs to quit the game
     {
         
-        string end = "Bye Bye! I hope you enjoyed the game!\n\n";
+        string end = "We hope our game has been able to help you with your chemistry preparation! Play more to learn more! Have a great day! \n\n";
         //report card generator
         final_report( report, report_index_counter );
 
 
-        typewriter( end, 150000 );
+        typewriter( end, 5000 );
         delete[] heal;  // to avoide memory leak
         delete[] report;
         return 0;
