@@ -251,7 +251,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
             {
 		    gscore=true;	   		
                 data_storing( game_status.health, game_status.heals_left, game_status.score );  //updating status
-                topic_report( file_name, count, correct, newflag,score );  // generating end of the topic report
+                topic_report( file_name, count, correct, newflag,gscore );  // generating end of the topic report
 
                 //checking if the array size is need to be increased or not
                 if ( index >= arraysize )
