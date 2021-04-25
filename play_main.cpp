@@ -53,7 +53,7 @@ void final_report( string * & report, int index );
 // Declaring global variables that are being used in whole program
 // The name of the global variables start with g example gplayer_name
 string gplayer_name;
-bool gflag = false, ghealing, gdice_guess = false, gchecker;    //added to detrmine whether to quit the game or not
+bool gflag = false, ghealing, gdice_guess = false, newflag=false, gchecker;    //added to detrmine whether to quit the game or not
 
 //----------------------------------------------------------------------------------------------------------------
 
@@ -248,11 +248,6 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
             // When no health is left
             if ( game_status.health <= 0 )
             {
-		bool newflag = false;
-		if (count==20)
-		{
-	           newflag=true;
-		}
 		
                 cout << " You have no health left :( Sorry You can't play more\n";
                 data_storing( game_status.health, game_status.heals_left, game_status.score );  //updating status
@@ -323,6 +318,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
         // When questions are finished
         if ( count == 20 )
         {
+	    newflag=true;
             topic_report( file_name, count, correct, newflag );  // generating end of the topic report
             string percent = percentage_calculator( count, correct );  // to get percentage for final report
 
