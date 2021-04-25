@@ -180,6 +180,22 @@ string introduction()
     typewriter( line_1, 75000 );
     print_line_pattern( '_', 80 );
     sleep( 1 );
+	
+    string option;
+    cout<< "Do you want to know how the game works, by reading the introduction? Or do you want to skip it? Press Y to read or N to skip".
+    cin>> option;
+    
+    while ( option!="y" && option!="Y" && option!="N" && option !="n")
+    {
+	    cout << "Invalid answer! Please enter (Y/N).\n";
+	    cin.ignore();
+	    cin >> option;	    
+    }
+   	
+   if (option=="Y" || option=="y")
+   { 
+ 	
+	
     typewriter( description_1, 75000 );
     typewriter( description_2, 75000 );
     typewriter( description_3, 75000 );
@@ -197,6 +213,7 @@ string introduction()
     typewriter( description_15, 75000  );
     print_line_pattern( '_', 80 );
     sleep( 1 );
+   }
     barrier();   // clearing the screen after the introduction
 
     // returns the player_name
