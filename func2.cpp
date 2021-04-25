@@ -55,13 +55,12 @@ bool random_guess()
     typewriter( line, 5000 );
 
     cin >> guess2;
-    bool score=true;
     
-    while (score==true)
+    while (true)
     {
         if (guess2=="1" && guess2 =="2" && guess2=="3" && guess2 =="4" && guess2=="5" && guess2 =="6")
         {
-            score=false;
+            break;
         }
         
         cout<< "Invalid input! The number entered should be between 1 to 6.\n";
