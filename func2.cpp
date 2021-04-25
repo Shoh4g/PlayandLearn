@@ -56,13 +56,13 @@ bool random_guess()
 
     cin >> guess;
     
-    while true
+    while (true)
     {
         if (guess>=1 && guess <=6)
         {
-            break
+            break;
         }
-        cout<< "Invalid input! The number entered should be between 1 to 6."
+        cout<< "Invalid input! The number entered should be between 1 to 6.";
     }
 
     cout << "Your guess is " << guess << endl << "The Number to be guessed is " << guessGenerator << endl;
