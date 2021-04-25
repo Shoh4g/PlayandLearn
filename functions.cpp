@@ -149,7 +149,7 @@ string introduction()
     string description_9 = "number resulted from rolling of the dice, you will gain 10 health points. THIS IS KNOWN AS THE LUCKY-DICE EFFECT.!\nThe game gets even exciting! The first two times ";
     string description_10 = "if your guess is wrong, no health points will be deducted.\nHowever, afterwards, your health points will be deducted for every wrong guess!";
     string description_11 = " \nThe amount of health points deducted depends on your choice of number of rolls.\n";
-    string description_12 = "The deduction in health is equal to (choice of rolls*1).\n I.e. if your initial choice of rolls was 3, 3 health points are deducted upon wrong guess.\n.So use healing CAREFULLY!\nAt the end of each topic/level, you can quit the game by pressing 'q' or move on another ";
+    string description_12 = "The deduction in health is equal to (choice of rolls*1).\n I.e. if your initial choice of rolls was 3, 3 health points are deducted upon wrong guess.\nSo use healing CAREFULLY!\nAt the end of each topic/level, you can quit the game by pressing 'q' or move on another ";
     string description_13 = "topic/level by pressing 'ENTER'.\nAt the end of each topic, your score will be shown.At the end of the game or when you quit, your final report card will be displayed.\n";
     string description_14 = "Lastly, you will be asked to answer the questions in two ways!\n1- By typing in the mcq letter.\n2- By typing in the answer which won't have any options.\n";
     string description_15 = "If you enter unexpected values, the game might behave in unexpected ways :(. So BE CAUTIOUS!!! \nIf game crashes, you can restart the program.\n";
@@ -182,7 +182,7 @@ string introduction()
 	
     //This option basically asks for an user input to determine whether he/she wants to watch the introduction.
     string option; 
-    cout << "Do you want to know how the game works, by reading the introduction? Or do you want to skip it? Press Y to read or N to skip\n.";		
+    cout << "Do you want to know how the game works, by reading the introduction? Or do you want to skip it? Press Y to read or N to skip.\n";		
     cin>> option;
     
 	
