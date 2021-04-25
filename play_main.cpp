@@ -242,13 +242,15 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
 
         // Considering when to quit the game
         // Game is quited when health is less than 0 or player has pressed q
+	bool target = false; // To make sure that the indexes in the percentage don't get messed up.
+	    
         if ( gflag == true || game_status.health <= 0 )
         {
             // When no health is left
-	    cout<<"Hello"<<endl;
             if ( game_status.health <= 0 )
             {
-		    gscore=true;	   		
+		target = true;
+		gscore=true; // This is to determine whether health has reached below 0.   		
                 data_storing( game_status.health, game_status.heals_left, game_status.score );  //updating status
                 topic_report( file_name, count, correct, newflag,gscore );  // generating end of the topic report
 
@@ -271,10 +273,14 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
             {
                 grow_array( report, arraysize );
             }
-
+		
+            if (target==false) // If it's false, we increment the report and enter a percentage.
+	    {
             string percent = percentage_calculator( count, correct );  // to get percentage for final report
             report[index] = percent;
             index++;
+	    }
+		
             return;   // It returns to the choosing of the topic function
         }
 
@@ -317,7 +323,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
         // When questions are finished
         if ( count == 20 )
         {
-	    newflag=true;
+	    newflag = true;
             topic_report( file_name, count, correct, newflag, gscore);  // generating end of the topic report
             string percent = percentage_calculator( count, correct );  // to get percentage for final report
 
