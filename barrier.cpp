@@ -19,8 +19,8 @@ void barrier()
 {
     cout << endl;
     cin.ignore(); //to clear the buffer
-    string line = "Please press Enter to continue.....\n";
-    typewriter( line, 150000 );  //Typewriter function to give a feel that words are beinhg said/written
+    string line = "Please press -Enter- to continue.....\n";
+    typewriter( line, 5000 );  //Typewriter function to give a feel that words are beinhg said/written
     cin.get();
     system( "clear" );  // Linux command to clear the screen
 }
@@ -36,16 +36,16 @@ bool barrier2()
 {
     char s;
     cout << endl;
-    string line = "Please press c to continue..... or 'q' to quit\n";
-    typewriter( line, 150000 );
+    string line = "Please press 'c' to continue or 'q' to quit\n";
+    typewriter( line, 5000 );
 
     cin >> s;  // get user's answer
 
     // This is to check if the entered key is right or not
     while ( s != 'c' && s != 'C' && s != 'q' && s != 'Q')
     {
-        cout << "You entered the wrong key!\n";
-        typewriter( line, 150000 );
+        cout << "Invalid input. Please try again!\n";
+        typewriter( line, 5000 );
         cin.ignore();  //clearing the input stream
         cin >> s;
     }
@@ -56,9 +56,7 @@ bool barrier2()
         system( "clear" );
         return false;   // This condition tells to continue the game
     }
-    else if ( s == 'q' || s == 'Q')
-    {
+
         system( "clear" );
         return true;
-    }
 }
