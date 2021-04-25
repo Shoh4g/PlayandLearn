@@ -192,7 +192,7 @@ string introduction()
 	    cin >> option;	    
     }
    	
-   if (option="Y" || option=="y")
+   if (option=="Y" || option=="y")
    { 
  	
 	
