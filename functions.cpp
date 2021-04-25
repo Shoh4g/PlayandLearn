@@ -166,35 +166,35 @@ string introduction()
 
     // asking the name of the user
     string asking_player_name = "What should we call you?\n";
-    typewriter( asking_player_name, 150000 );
+    typewriter( asking_player_name, 75000 );
     getline( cin, player_name);
 
     // starting the introduction
-    typewriter( greetings, 150000 );
-    typewriter ( player_name, 150000 );
+    typewriter( greetings, 75000 );
+    typewriter ( player_name, 75000 );
     sleep(1);
     cout <<"!\n";
     sleep(1);
     print_line_pattern( '_', 80 );
     sleep( 1 );
-    typewriter( line_1, 150000 );
+    typewriter( line_1, 75000 );
     print_line_pattern( '_', 80 );
     sleep( 1 );
-    typewriter( description_1, 150000 );
-    typewriter( description_2, 150000 );
-    typewriter( description_3, 150000 );
-    typewriter( description_4, 150000 );
-    typewriter( description_5, 150000 );
-    typewriter( description_6, 150000 );
-    typewriter( description_7, 150000 );
-    typewriter( description_8, 150000 );
-    typewriter( description_9, 150000 );
-    typewriter( description_10, 150000 );
-    typewriter( description_11, 150000 );
-    typewriter( description_12, 150000 );
-    typewriter( description_13, 150000 );
-    typewriter( description_14, 150000 );
-    typewriter( description_15, 150000 );
+    typewriter( description_1, 75000 );
+    typewriter( description_2, 75000 );
+    typewriter( description_3, 75000 );
+    typewriter( description_4, 75000  );
+    typewriter( description_5, 75000  );
+    typewriter( description_6, 75000  );
+    typewriter( description_7, 75000  );
+    typewriter( description_8, 75000  );
+    typewriter( description_9, 75000  );
+    typewriter( description_10, 75000  );
+    typewriter( description_11, 75000  );
+    typewriter( description_12, 75000  );
+    typewriter( description_13, 75000  );
+    typewriter( description_14, 75000  );
+    typewriter( description_15, 75000  );
     print_line_pattern( '_', 80 );
     sleep( 1 );
     barrier();   // clearing the screen after the introduction
