@@ -768,10 +768,10 @@ int main()
         {
             break;  // break the loop
         }
-        if (game_status.health>0)
+        if (game_status.health > 0)
 	{
 		typewriter( continue_game, 5000 );
-	}
+	
         
         cin.ignore();  //clearing the input stream
         cin >> continue_answer;
@@ -784,6 +784,7 @@ int main()
             cin.ignore();  //clearing the input stream
             cin >> continue_answer;
         }
+	}	
 
     }while ( continue_answer == "Y" || continue_answer == "y");
 
