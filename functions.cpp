@@ -180,7 +180,7 @@ string introduction()
 
 	
     string option;
-    cout<< "Do you want to know how the game works, by reading the introduction? Or do you want to skip it? Press Y to read or N to skip";
+    cout<< "Do you want to know how the game works, by reading the introduction? Or do you want to skip it? Press Y to read or N to skip\n";
     cin>> option;
     
     while ( option!="y" && option!="Y" && option!="N" && option !="n")
