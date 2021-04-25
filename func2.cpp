@@ -56,13 +56,8 @@ bool random_guess()
 
     cin >> guess2;
     
-    while (true)
-    {
-        if (guess2=="1" && guess2 =="2" && guess2=="3" && guess2 =="4" && guess2=="5" && guess2 =="6")
-        {
-            break;
-        }
-        
+    while (guess2!="1" && guess2 !="2" && guess2!="3" && guess2 !="4" && guess2!="5" && guess2 !="6")
+    {     
         cout<< "Invalid input! The number entered should be between 1 to 6.\n";
         cin >> guess2;
     }
