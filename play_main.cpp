@@ -323,8 +323,9 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
         // When questions are finished
         if ( count == 20 )
         {
-	    newflag = true;
+	    newflag = true; // This means all 20 pages have been read.
             topic_report( file_name, count, correct, newflag, gscore);  // generating end of the topic report
+	    newflag = false; // This resets the value of new flag since count is again 0
             string percent = percentage_calculator( count, correct );  // to get percentage for final report
 
             //checking if the array size is need to be increased or not
@@ -647,7 +648,7 @@ void topic_report( string filename,  int count, double correct, bool newflag, bo
     if (newflag == true)
     {
     cout << "The Topic ended!\n\n";
-	newflag = false;
+	
     }
 	
     cout << "Your Score in " << filename << " is " << percentage << "%" << endl;
