@@ -137,12 +137,12 @@ string introduction()
     // Various string variables are used to store the text inorder to give a typewriter effect when they are printed on console
     string player_name;   
     string greetings  = "Greetings ";
-    string line_1 = "This is how game works!\n";
+    string line_1 = "Let's see how the game works!\n";
     string description_1 = "This game focuses on various concepts of Chemistry and is a supplement to text-books and revision guides!\n";
-    string description_2 = "The game will consist of 3 rounds!\nEach round is related to specific topics in the Chemistry!\n";
+    string description_2 = "The game will consist of 3 rounds!\nEach round is related to a specific topic of  Chemistry!\n";
     string description_3 = "Each round is then further divided into 3 difficulty levels :\n--> Easy\n--> Medium\n--> Hard\n";
     string description_4 = "You will answer chemistry related mcqs at each level.\nAt the start of the game, you will be provided with 50 health points.\n";
-    string description_5 = "If you answer the mcqs correctly, your score will increase by 1.\nHowever, if you answer the mcqs wrong, your health points will decrease by 2!\n";
+    string description_5 = "With every correct answer, your score will increase by 1.\nHowever, with an incorrect answer, your health points will decrease by 2!\n";
     string description_6 = "The game ends when your health points reach to 0.\nThe interesting thing about this game is that you can heal (regain 10 health points) ";
     string description_7 = "yourself for certain times.\nThe amount of times you can heal is determined in the start where you mention the maximum number of times you want to heal (from 3-8 times).\n"; 
     string description_8 = "However, the catch is that the healing procedure depends on your guess between 1-6.\nIf your guess matches with the ";
@@ -187,7 +187,7 @@ string introduction()
     
     while ( option!="y" && option!="Y" && option!="N" && option !="n")
     {
-	    cout << "Invalid answer! Please enter (Y/N)"<<endl;
+	    cout << "Invalid answer! Please enter (Y/N)\n";
 	    cin.ignore();
 	    cin >> option;	    
     }
