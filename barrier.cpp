@@ -18,6 +18,7 @@ void typewriter( string str, int time );
 void barrier()
 {
     cout << endl;
+    cin.ignore(); //to clear the buffer
     string line = "Please press Enter to continue.....\n";
     typewriter( line, 150000 );  //Typewriter function to give a feel that words are beinhg said/written
     cin.get();

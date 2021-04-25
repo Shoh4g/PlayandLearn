@@ -177,9 +177,7 @@ string introduction()
     sleep(1);
     print_line_pattern( '_', 80 );
     sleep( 1 );
-    
-    print_line_pattern( '_', 80 );
-    sleep( 1 );
+
 	
     string option;
     cout<< "Do you want to know how the game works, by reading the introduction? Or do you want to skip it? Press Y to read or N to skip";
@@ -197,6 +195,8 @@ string introduction()
  	
     typewriter( line_1, 75000 );
     typewriter( description_1, 75000 );
+    print_line_pattern( '_', 80 );
+    sleep( 1 );
     typewriter( description_2, 75000 );
     typewriter( description_3, 75000 );
     typewriter( description_4, 75000  );
