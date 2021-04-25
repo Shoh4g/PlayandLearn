@@ -16,11 +16,11 @@
 #ifdef _WIN32
 #include <windows.h>
 #else
-#include <unistd.h> //Trying to make it compaitable with linux and windows as well but need to change some functions before 
+#include <unistd.h> //Trying to make it compatible with both linux and windows.
 #endif              // implementig on windows
 
 
-// Adding programmer created header files
+// including header files
 #include "functions.h"  
 #include "barrier.h"
 #include "func2.h"
@@ -30,7 +30,7 @@ using namespace std;
 //----------------------------------------------------------------------------------------------------------------
 
 
-// Making function declarations
+// Functions used as per main.cpp 
 void typewriter( string, int );
 string to_upper( string str );
 bool barrier2();
@@ -53,20 +53,19 @@ void final_report( string * & report, int index );
 // Declaring global variables that are being used in whole program
 // The name of the global variables start with g example gplayer_name
 string gplayer_name;
-bool gflag = false, ghealing, gdice_guess = false, newflag=false, gscore=false, gchecker;    //added to detrmine whether to quit the game or not
+bool gflag = false, ghealing, gdice_guess = false, newflag=false, gscore=false, gchecker;    // if any of these variables become true, the game won't continue.
 
 //----------------------------------------------------------------------------------------------------------------
 
-//creating a struct to store various data of the game
-//name will store the name of the player, his health, his heals_left, and his score
+
+//struct will store the name of the player, his health, his heals_left, and his score
 struct data{
     string name;
     int health, heals_left, score;
 };
 
 
-struct data game_status;   //making game_status a global variable to be used in the whole program. It does not have a g before the name
-
+struct data game_status;   //making game_status a global variable to be used in the whole program. 
 //----------------------------------------------------------------------------------------------------------------
 
 
@@ -81,12 +80,12 @@ void grow_array( string * & array, int & size2 )
     int newSize = size2 * 2;  // Doubles the size of previous array
 
     // doubled the size of the array;
-    string * tmp = new string [ newSize ];   // Creates a new Dynamic Array
+    string * tmp = new string [ newSize ];   //  Dynamic Array
     // copy original contents
     for ( int i = 0; i < size2; ++i )
         tmp[i] = array[i];
 
-    delete [] array;  // Frees up the space
+    delete [] array;  
 
     array = tmp;
     size2 = newSize;
@@ -131,7 +130,7 @@ void data_storing( int health, int heals, int score )
     //checking error in the opening of the file
     if ( getdata.fail() )
     {
-        cout << "Error in opening status file! OOPS :(" << endl;
+        cout << "Failure in opening the file! " << endl;
         exit(1);
     }
 
@@ -158,7 +157,7 @@ void show_status()
     //checking error in the opening of the file
     if ( showdata.fail() )
     {
-        cout << "Error in opening status file! OOPS :(" << endl;
+        cout << "Failure in opening the file! " << endl;
         return;
     }
 
@@ -192,12 +191,12 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
     int count = 0;                          //To keep track of questions and suggesting and comparing answers accordingly
     double correct = 0;                    // To keep track of correct answered questions
 
-    ifstream read( file_name.c_str() );   //Opens the respecrive file
+    ifstream read( file_name.c_str() );   
 
     // CHecking error in the file
     if ( read.fail() )
     {
-        cout << "Error Opening the file.. OOP :(" << endl;
+        cout << "Failure in opening the file! " << endl;
         exit(1);
     }
 
@@ -301,11 +300,11 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
                 else
                 {
                     cout << " Sadly, the guest is incorrect! Good luck for next time. \n";
-                    gchecker = heal_deduction_checker( heal, size2 );  //checking whether to deduct points for healing or not
-                                                                       // Helath is not deducted for the first two times
+                    gchecker = heal_deduction_checker( heal, size2 );  //checking whether to deduct points for healing
+                                                                       
                     if ( gchecker == true )
                      {
-                        cout << size2 << "health points are deducted from your total health\n";  // Deducting points at the wrong guess
+                        cout << size2 << " health points are deducted from your total health\n";  // Deducting points at the wrong guess
                         game_status.health = game_status.health - (size2 * 1); 
                     }
                 }
@@ -330,12 +329,11 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
 
             report[index] = percent;
             index++;
-            break; // breaking the loop
+            break; 
         }
     }
 
-    read.close();   // clsoing the file in the end
-
+    read.close();  
 }
 
 //----------------------------------------------------------------------------------------------------------------
