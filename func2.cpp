@@ -52,9 +52,18 @@ bool random_guess()
     int guessGenerator = ( rand() % 6 )+ 1;   // generating a random number
     cout << endl;
     string line = "Guess a number between 1 to 6\n";
-    typewriter( line, 50000 );
+    typewriter( line, 5000 );
 
     cin >> guess;
+    
+    while true
+    {
+        if (guess>=1 && guess <=6)
+        {
+            break
+        }
+        cout<< "Invalid input! The number entered should be between 1 to 6."
+    }
 
     cout << "Your guess is " << guess << endl << "The Number to be guessed is " << guessGenerator << endl;
     // Checking if guess is correct or not and the return accordingly
