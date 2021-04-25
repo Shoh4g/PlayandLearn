@@ -30,13 +30,13 @@ bool healer()
         cin >> s;
     }
 
-    // If y or Y is pressed, it tells that healing is needed
-    if ( s == 'Y' || s == 'y' )
+    // This means healing not needed
+    if ( s == 'N' || s == 'n' )
     {
-        return true;
+        return false;
     }
-    // If n or N is pressed, it tells that healing is not needed
-    return false;
+    // This means healing needed
+    return true;
 
 
 }
