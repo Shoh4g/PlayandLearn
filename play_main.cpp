@@ -45,7 +45,7 @@ void electrochemistry( int choice, int * & heal, int size2, string * & report, i
 void thermochemistry( int choice, int * & heal, int size2, string * & report, int & arraysize, int & index );
 void chemistry_topics( int choice, int * &heal, int size2, string * & report, int & arraysize, int & index );
 string percentage_calculator( int count, double correct );
-void topic_report( string filename,  int count, double correct );
+void topic_report( string filename,  int count, double correct, bool newflag);
 void final_report( string * & report, int index );
 
 //----------------------------------------------------------------------------------------------------------------
@@ -248,9 +248,15 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
             // When no health is left
             if ( game_status.health <= 0 )
             {
+		bool newflag = false;
+		if (count==20)
+		{
+	           newflag=true;
+		}
+		
                 cout << " You have no health left :( Sorry You can't play more\n";
                 data_storing( game_status.health, game_status.heals_left, game_status.score );  //updating status
-                topic_report( file_name, count, correct );  // generating end of the topic report
+                topic_report( file_name, count, correct, newflag );  // generating end of the topic report
 
                 //checking if the array size is need to be increased or not
                 if ( index >= arraysize )
@@ -264,7 +270,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
             }
 
             data_storing( game_status.health, game_status.heals_left, game_status.score );  //updating status
-            topic_report( file_name, count, correct );  // generating end of the topic report
+            topic_report( file_name, count, correct, newflag );  // generating end of the topic report
 
             //checking if the array size is need to be increased or not
             if ( index >= arraysize )
@@ -317,7 +323,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
         // When questions are finished
         if ( count == 20 )
         {
-            topic_report( file_name, count, correct );  // generating end of the topic report
+            topic_report( file_name, count, correct, newflag );  // generating end of the topic report
             string percent = percentage_calculator( count, correct );  // to get percentage for final report
 
             //checking if the array size is need to be increased or not
@@ -622,7 +628,7 @@ string percentage_calculator( int count, double correct )
 
 
 //This will print the end of the topic score report
-void topic_report( string filename,  int count, double correct )
+void topic_report( string filename,  int count, double correct, bool newflag)
 {
     system( "clear" );
     cout << showpoint << fixed << setprecision(2);  //Setting up the precision
@@ -634,7 +640,10 @@ void topic_report( string filename,  int count, double correct )
     index = filename.find("_");
     filename = filename.erase( index, 1 );
     filename = filename.insert( index, " ");
+    if (newflag==true)
+    {
     cout << "The Topic ended!\n\n";
+    }
     cout << "Your Score in " << filename << " is " << percentage << "%" << endl;
 
     // adding comments with respect to score
