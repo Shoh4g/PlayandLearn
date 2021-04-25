@@ -92,20 +92,20 @@ void diamond( char diamondCharacter, int m, int r)
             {
                 cout << setw( m - (3 * i ) + 1) << diamondCharacter;
                 cout << endl;
-                sleep(1);   // To guve a time delay effect
+                sleep(0.5);   // To guve a time delay effect
             }
             else
             {
                 cout << setw( m - (3 * i )) << diamondCharacter << setw( ( 6 * i ) + 2 ) << diamondCharacter;
                 cout << endl;
-                sleep(1);
+                sleep(0.5);
             }
         }
         else 
         {
             cout << setw( m - (3 * i )) << diamondCharacter << setw( ( 6 * i ) + 1 ) << " P.L.A.Y_A.N.D_L.E.A.R.N " << diamondCharacter;;
             cout << endl;
-            sleep(1);            
+            sleep(0.5);            
         }
     }
     
@@ -116,13 +116,13 @@ void diamond( char diamondCharacter, int m, int r)
             {
                 cout << setw( m - (3 * i  ) + 1) << diamondCharacter;
                 cout << endl;
-                sleep(1);
+                sleep(0.5);
             }
             else
             {
                 cout << setw( m - (3 * i )) << diamondCharacter << setw( ( 6 * i ) + 2 ) << diamondCharacter;
                 cout << endl;
-                sleep(1);
+                sleep(0.5);
             }
     }
 
@@ -178,25 +178,28 @@ string introduction()
     print_line_pattern( '_', 80 );
     sleep( 1 );
 
+   
 	
-    string option;
-    cout<< "Do you want to know how the game works, by reading the introduction? Or do you want to skip it? Press Y to read or N to skip\n";
+    //This option basically asks for an user input to determine whether he/she wants to watch the introduction.
+    string option; 
+    cout << "Do you want to know how the game works, by reading the introduction? Or do you want to skip it? Press Y to read or N to skip\n.";		
     cin>> option;
     
-    while ( option!="y" && option!="Y" && option!="N" && option !="n")
+	
+    // This loop checks whether the input is valid. If the user enters anything other than Y/N/y/n the loop will keep on going.	
+    while ( option != "y" && option != "Y" && option != "N" && option != "n")
     {
 	    cout << "Invalid answer! Please enter (Y/N)\n";
-	    cin.ignore();
+	    cin.ignore(); // It clears the input string.
 	    cin >> option;	    
     }
    	
-   if (option=="Y" || option=="y")
-   { 
- 	
+   if (option == "Y" || option == "y")  // If the user input is Y/y, he/she will view the introduction. Otherwise, the introduction will be skipped. In this case, intro is not skipped.
+   { 	
     typewriter( line_1, 75000 );
-    typewriter( description_1, 75000 );
     print_line_pattern( '_', 80 );
     sleep( 1 );
+    typewriter( description_1, 75000 );
     typewriter( description_2, 75000 );
     typewriter( description_3, 75000 );
     typewriter( description_4, 75000  );
