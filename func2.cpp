@@ -55,15 +55,23 @@ bool random_guess()
     typewriter( line, 5000 );
 
     cin >> guess;
+    bool score=true;
     
-    while (true)
+    while (score==true)
     {
         if (guess==1 && guess ==2 && guess==3 && guess ==4 && guess==5 && guess ==6)
         {
-            break;
+            score=false;
         }
+        
         cout<< "Invalid input! The number entered should be between 1 to 6.\n";
         cin >> guess;
+        if (isdigit(guess)==false)
+        {
+            cout<< "Invalid input! The number entered should be between 1 to 6.\n";
+            cin >> guess;    
+        }
+            
     }
 
     cout << "Your guess is " << guess << endl << "The Number to be guessed is " << guessGenerator << endl;
