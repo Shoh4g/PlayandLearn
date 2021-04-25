@@ -51,12 +51,12 @@ bool barrier2()
     }
 
 
-    if ( s == 'c' || s == 'C')   // This condition will determine whether to continue or quite
+    if ( s == 'q' || s == 'Q')   // To check whether the game will continue
     {
         system( "clear" );
-        return false;   // This condition tells to continue the game
+        return true;   // The game gets quitted
     }
 
         system( "clear" );
-        return true;
+        return false;
 }
