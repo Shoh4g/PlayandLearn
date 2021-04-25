@@ -644,10 +644,12 @@ void topic_report( string filename,  int count, double correct, bool newflag, bo
     index = filename.find("_");
     filename = filename.erase( index, 1 );
     filename = filename.insert( index, " ");
-    if (newflag==true)
+    if (newflag == true)
     {
     cout << "The Topic ended!\n\n";
+	newflag = false;
     }
+	
     cout << "Your Score in " << filename << " is " << percentage << "%" << endl;
 
     // adding comments with respect to score
@@ -786,7 +788,7 @@ int main()
         }
 	}	
 
-    }while ( continue_answer == "Y" || continue_answer == "y");
+    }while ( (continue_answer == "Y" || continue_answer == "y") &&  game_status.health > 0);
 
 
 
