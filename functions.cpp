@@ -7,7 +7,7 @@
 #include <ctime>
 #include <string>
 #ifdef _WIN32
-#include <Windows.h>  //However, program need sto be changed. Change system("clear") to system("cls") and use numbers in Sleep(1000) for 1 sec in windows
+#include <Windows.h>  //However, program needs to be changed. Change system("clear") to system("cls") and use numbers in Sleep(1000) for 1 sec in windows
 #else                 // and sleep(1) for 1 sec in linux
 #include <unistd.h> //for windows, change it into <windows.h>
 #endif
@@ -138,21 +138,21 @@ string introduction()
     string player_name;   
     string greetings  = "Greetings ";
     string line_1 = "Let's see how the game works!\n";
-    string description_1 = "This game focuses on various concepts of Chemistry and is a supplement to text-books and revision guides!\n";
-    string description_2 = "The game will consist of 3 rounds!\nEach round is related to a specific topic of  Chemistry!\n";
+    string description_1 = "Our game focuses on 3 concepts of Chemistry. It is a supplement to text-books and revision guides!\n";
+    string description_2 = "The game will consist of 3 rounds!\nEach round is related to a specific topic of Chemistry!\n";
     string description_3 = "Each round is then further divided into 3 difficulty levels :\n--> Easy\n--> Medium\n--> Hard\n";
-    string description_4 = "You will answer chemistry related mcqs at each level.\nAt the start of the game, you will be provided with 50 health points.\n";
-    string description_5 = "With every correct answer, your score will increase by 1.\nHowever, with an incorrect answer, your health points will decrease by 2!\n";
-    string description_6 = "The game ends when your health points reach to 0.\nThe interesting thing about this game is that you can heal (regain 10 health points) ";
-    string description_7 = "yourself for certain times.\nThe amount of times you can heal is determined in the start where you mention the maximum number of times you want to heal (from 3-8 times).\n"; 
+    string description_4 = "You will answer chemistry related mcqs and short Q/A at each level.\nAt the start of the game, you will be provided with 50 health points.\n";
+    string description_5 = "With every correct answer, your SCORE will increase by 1.\nHowever, with an incorrect answer, your HEALTH POINTS will decrease by 2!\n";
+    string description_6 = "The game ends when your health points reach to 0.\n BUT there is a HEALING MECHANISM! You can heal (regain 10 health points) ";
+    string description_7 = "yourself for certain times.\nThe amount of times you can heal is determined at the start where you mention the maximum number of times you want to heal (from 3-8 times).\n"; 
     string description_8 = "However, the catch is that the healing procedure depends on your guess between 1-6.\nIf your guess matches with the ";
-    string description_9 = "number resulted from rolling of the dice, you will regain 10 health points .i.e. healed!\nMoreover, the game gets more interesting! The first two times ";
-    string description_10 = "if your guess is wrong, no health points will be deducted.\nHowever, after then every next time, your guess is wrong, health points";
-    string description_11 = " will be deducted from your current health points!\nThe amount of health points deducted depends on your choice of number of rolls.\n";
-    string description_12 = "The deduction in health is equal to (choice of rolls*1).\nSo use healing CAREFULLY!\nAt the end of each topic/level, you can quit the game by pressing 'q' or move on another ";
+    string description_9 = "number resulted from rolling of the dice, you will gain 10 health points. THIS IS KNOWN AS THE LUCKY-DICE EFFECT.!\nThe game gets even exciting! The first two times ";
+    string description_10 = "if your guess is wrong, no health points will be deducted.\nHowever, afterwards, your health points will be deducted for every wrong guess!";
+    string description_11 = " \nThe amount of health points deducted depends on your choice of number of rolls.\n";
+    string description_12 = "The deduction in health is equal to (choice of rolls*1).\n I.e. if your initial choice of rolls was 3, 3 health points are deducted upon wrong guess.\n.So use healing CAREFULLY!\nAt the end of each topic/level, you can quit the game by pressing 'q' or move on another ";
     string description_13 = "topic/level by pressing 'ENTER'.\nAt the end of each topic, your score will be shown.At the end of the game or when you quit, your final report card will be displayed.\n";
     string description_14 = "Lastly, you will be asked to answer the questions in two ways!\n1- By typing in the mcq letter.\n2- By typing in the answer which won't have any options.\n";
-    string description_15 = "If you enter unexpected values, the game might behave in unexpected ways :(\nIf game crashes, you can restart the program.\n";
+    string description_15 = "If you enter unexpected values, the game might behave in unexpected ways :(. So BE CAUTIOUS!!! \nIf game crashes, you can restart the program.\n";
 
     // printing the logo on the console
     system("clear"); // clear screen command for linux
