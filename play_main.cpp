@@ -53,7 +53,7 @@ void final_report( string * & report, int index );
 // Declaring global variables that are being used in whole program
 // The name of the global variables start with g example gplayer_name
 string gplayer_name;
-bool gflag = false, ghealing, gdice_guess = false, newflag=false, gchecker;    //added to detrmine whether to quit the game or not
+bool gflag = false, ghealing, gdice_guess = false, newflag=false, gscore=false, gchecker;    //added to detrmine whether to quit the game or not
 
 //----------------------------------------------------------------------------------------------------------------
 
@@ -249,10 +249,9 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
 	    cout<<"Hello"<<endl;
             if ( game_status.health <= 0 )
             {
-		
-                cout << " You have no health left :( Sorry You can't play more\n";
+		    gscore=true;	   		
                 data_storing( game_status.health, game_status.heals_left, game_status.score );  //updating status
-                topic_report( file_name, count, correct, newflag );  // generating end of the topic report
+                topic_report( file_name, count, correct, newflag,score );  // generating end of the topic report
 
                 //checking if the array size is need to be increased or not
                 if ( index >= arraysize )
@@ -625,9 +624,13 @@ string percentage_calculator( int count, double correct )
 
 
 //This will print the end of the topic score report
-void topic_report( string filename,  int count, double correct, bool newflag)
+void topic_report( string filename,  int count, double correct, bool newflag, bool gscore)
 {
     system( "clear" );
+    if (gscore==true)
+    {
+	    cout << " You have no health left :( Sorry You can't play more\n";
+    }   
     cout << showpoint << fixed << setprecision(2);  //Setting up the precision
     show_status();   // This will show the player name, health, heals, and score
     cout << endl << endl;
@@ -761,8 +764,11 @@ int main()
         {
             break;  // break the loop
         }
-
-        typewriter( continue_game, 5000 );
+        if (game_status.health>0)
+	{
+		typewriter( continue_game, 5000 );
+	}
+        
         cin.ignore();  //clearing the input stream
         cin >> continue_answer;
 
