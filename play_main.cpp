@@ -246,6 +246,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
         if ( gflag == true || game_status.health <= 0 )
         {
             // When no health is left
+	    cout<<"Hello"<<endl;
             if ( game_status.health <= 0 )
             {
 		
