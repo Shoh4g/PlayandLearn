@@ -17,7 +17,7 @@ bool healer()
 {
     char s;   // Take user input
     cout << endl;
-    string line = "Do you want to heal? (Y/N)\n";
+    string line = "Do you want to heal? (Y/N)\n";  //asking the user for input
     typewriter( line, 5000 );
     cin >> s;
 
@@ -35,6 +35,7 @@ bool healer()
     {
         return false;
     }
+    
     // This means healing needed
     return true;
 
@@ -64,11 +65,13 @@ bool random_guess()
 
     int guess= stoi(guess2);
     cout << "Your guess is " << guess << endl << "The Number to be guessed is " << guessGenerator << endl;
+    
     // Checking if guess is correct or not and the return accordingly
     if ( guess == guessGenerator )
     {
         return true;
     }
+    
     return false;
 
     
