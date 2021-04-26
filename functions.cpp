@@ -52,7 +52,7 @@ void typewriter( string str, int time )
     {
         cout << str[i];
         cout.flush();
-	    usleep( time );
+	usleep( time );
     }
 
 }
@@ -98,14 +98,14 @@ void diamond( char diamondCharacter, int m, int r)
             {
                 cout << setw( m - (3 * i )) << diamondCharacter << setw( ( 6 * i ) + 2 ) << diamondCharacter;
                 cout << endl;
-                sleep(0.5);
+                sleep( 0.5 );
             }
         }
         else 
         {
-            cout << setw( m - (3 * i )) << diamondCharacter << setw( ( 6 * i ) + 1 ) << " P.L.A.Y_A.N.D_L.E.A.R.N " << diamondCharacter;;
+            cout << setw( m - ( 3 * i )) << diamondCharacter << setw( ( 6 * i ) + 1 ) << " P.L.A.Y_A.N.D_L.E.A.R.N " << diamondCharacter;;
             cout << endl;
-            sleep(0.5);            
+            sleep( 0.5 );            
         }
     }
     
@@ -116,13 +116,13 @@ void diamond( char diamondCharacter, int m, int r)
             {
                 cout << setw( m - (3 * i  ) + 1) << diamondCharacter;
                 cout << endl;
-                sleep(0.5);
+                sleep( 0.5 );
             }
             else
             {
-                cout << setw( m - (3 * i )) << diamondCharacter << setw( ( 6 * i ) + 2 ) << diamondCharacter;
+                cout << setw( m - ( 3 * i )) << diamondCharacter << setw( ( 6 * i ) + 2 ) << diamondCharacter;
                 cout << endl;
-                sleep(0.5);
+                sleep( 0.5 );
             }
     }
 
@@ -157,24 +157,24 @@ string introduction()
     // printing the logo on the console
     system("clear"); // clear screen command for linux
     print_line_pattern( '=', 80 );   // Prints the pattern of =
-    sleep(1);   //gives a delay
+    sleep( 1 );   //gives a delay
     diamond( '*', 40, 5 );   // prints the diamomnd
-    sleep(1);
+    sleep( 1 );
     print_line_pattern( '=', 80 );
-    sleep(2);
+    sleep( 2 );
     system("clear");  // It clears the screen in linux for windows use system("cls")
 
     // asking the name of the user
     string asking_player_name = "What should we call you?\n";
     typewriter( asking_player_name, 75000 );
-    getline( cin, player_name);
+    getline( cin, player_name );
 
     // starting the introduction
     typewriter( greetings, 75000 );
     typewriter ( player_name, 75000 );
-    sleep(1);
+    sleep( 1 );
     cout <<"!\n";
-    sleep(1);
+    sleep( 1 );
     print_line_pattern( '_', 80 );
     sleep( 1 );
 
@@ -187,7 +187,7 @@ string introduction()
     
 	
     // This loop checks whether the input is valid. If the user enters anything other than Y/N/y/n the loop will keep on going.	
-    while ( option != "y" && option != "Y" && option != "N" && option != "n")
+    while ( option != "y" && option != "Y" && option != "N" && option != "n" )
     {
 	    cout << "Invalid answer! Please enter (Y/N)\n";
 	    cin.ignore(); // It clears the input string.
