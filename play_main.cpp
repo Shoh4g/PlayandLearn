@@ -45,7 +45,7 @@ void electrochemistry( int choice, int * & heal, int size2, string * & report, i
 void thermochemistry( int choice, int * & heal, int size2, string * & report, int & arraysize, int & index );
 void chemistry_topics( int choice, int * &heal, int size2, string * & report, int & arraysize, int & index );
 string percentage_calculator( int count, double correct );
-void topic_report( string filename,  int count, double correct, bool newflag, bool gscore);
+void topic_report( string filename,  int count, double correct, bool newflag, bool gscore );
 void final_report( string * & report, int index );
 
 //----------------------------------------------------------------------------------------------------------------
@@ -131,7 +131,7 @@ void data_storing( int health, int heals, int score )
     if ( getdata.fail() )
     {
         cout << "Failure in opening the file! " << endl;
-        exit(1);
+        exit( 1 );
     }
 
     // assigning values to various variables of struct data structure
@@ -197,7 +197,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
     if ( read.fail() )
     {
         cout << "Failure in opening the file! " << endl;
-        exit(1);
+        exit( 1 );
     }
 
     // A loop that reads the complete file
@@ -205,7 +205,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
     while ( !read.eof() )
     {
         getline( read, line );
-        while ( line != "**")   // "**" suggests one question is done in the file
+        while ( line != "**" )   // "**" suggests one question is done in the file
         {
             cout << line << endl;
 	        getline( read, line );
@@ -219,7 +219,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
 
 
         // To check if the answer is correct or not
-        if ( answer == correct_answer[count])
+        if ( answer == correct_answer[count] )
         {
             cout << " Correct answer! Good job :)\n";   // Correct Answer increases score and correct count
             game_status.score++; 
@@ -250,7 +250,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
             if ( game_status.health <= 0 )
             {
 		target = true;
-		gscore=true; // This is to determine whether health has reached below 0.   		
+		gscore = true; // This is to determine whether health has reached below 0.   		
                 data_storing( game_status.health, game_status.heals_left, game_status.score );  //updating status
                 topic_report( file_name, count, correct, newflag,gscore );  // generating end of the topic report
 
@@ -274,7 +274,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
                 grow_array( report, arraysize );
             }
 		
-            if (target==false) // If it's false, we increment the report and enter a percentage.
+            if (target == false) // If it's false, we increment the report and enter a percentage.
 	    {
             string percent = percentage_calculator( count, correct );  // to get percentage for final report
             report[index] = percent;
@@ -324,7 +324,7 @@ void game_play( string correct_answer[20], string file_name, int * & heal, int s
         if ( count == 20 )
         {
 	    newflag = true; // This means all 20 pages have been read.
-            topic_report( file_name, count, correct, newflag, gscore);  // generating end of the topic report
+            topic_report( file_name, count, correct, newflag, gscore );  // generating end of the topic report
 	    newflag = false; // This resets the value of new flag since count is again 0
             string percent = percentage_calculator( count, correct );  // to get percentage for final report
 
@@ -386,7 +386,7 @@ void periodicity ( int choice, int * & heal, int size2, string * & report, int &
         report[index] = "Medium";
         index++;
         // An array containing correct answers
-        string correct_answer[20] = {"INCREASES", "D", "C", "B", "C", "18", "B", "B", "D", "C", "A", "2", "D", "6", "C", "D", "ACIDIC", "C", "B", "B"} ;
+        string correct_answer[20] = { "INCREASES", "D", "C", "B", "C", "18", "B", "B", "D", "C", "A", "2", "D", "6", "C", "D", "ACIDIC", "C", "B", "B" } ;
         string file_name = "Periodicity_Medium.txt";  //File that contains questions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
 
@@ -403,7 +403,7 @@ void periodicity ( int choice, int * & heal, int size2, string * & report, int &
         report[index] = "Hard";
         index++;
         // An array containing the correct answers
-        string correct_answer[20] = {"C", "DECREASES", "A", "C", "A", "C", "B", "B", "4", "D", "C", "ISOTOPES", "C", "B", "A", "B", "C", "ENDOTHERMIC", "A", "C"} ;
+        string correct_answer[20] = { "C", "DECREASES", "A", "C", "A", "C", "B", "B", "4", "D", "C", "ISOTOPES", "C", "B", "A", "B", "C", "ENDOTHERMIC", "A", "C" } ;
         string file_name = "Periodicity_Hard.txt";  //File name that contains questions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
  
@@ -433,13 +433,13 @@ void electrochemistry( int choice, int * & heal, int size2, string * & report, i
         report[index] = "Easy";
         index++;
         //An array cobtaining correct answers
-        string correct_answer[20] = {"REDUCTION", "B", "D", "B", "C", "OXIDATION", "B", "OXIDIZED", "GRAPHITE", "B", "A", "C", "B", "D", "CHEMICAL-ENERGY", "A", "ELECTROPLATING", "C", "A", "0"} ;
+        string correct_answer[20] = { "REDUCTION", "B", "D", "B", "C", "OXIDATION", "B", "OXIDIZED", "GRAPHITE", "B", "A", "C", "B", "D", "CHEMICAL-ENERGY", "A", "ELECTROPLATING", "C", "A", "0" } ;
         string file_name = "Electrochemistry_Easy.txt"; //File name having the quetsions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
 
     }
     // choice for medium level
-    else if (choice == 2 )
+    else if ( choice == 2 )
     {
         //checking if the array size is need to be increased or not
         if ( index >= arraysize )
@@ -450,7 +450,7 @@ void electrochemistry( int choice, int * & heal, int size2, string * & report, i
         report[index] = "Medium";
         index++;
         // An array containing the correct answers
-        string correct_answer[20] = {"C", "ZINC", "D", "A", "OXIDIZED", "HYDROLYSIS", "A", "A", "B", "C", "OXIDATION", "B", "C", "D", "B", "D", "C", "C", "D", "C"} ;
+        string correct_answer[20] = { "C", "ZINC", "D", "A", "OXIDIZED", "HYDROLYSIS", "A", "A", "B", "C", "OXIDATION", "B", "C", "D", "B", "D", "C", "C", "D", "C" } ;
         string file_name = "Electrochemistry_Medium.txt";  //file name containing the questions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
 
@@ -467,7 +467,7 @@ void electrochemistry( int choice, int * & heal, int size2, string * & report, i
         report[index] = "Hard";
         index++;
         //An array having the correct answers
-        string correct_answer[20] = {"D", "E", "A", "E", "2.7", "A", "D", "5.4", "D", "C", "B", "C", "B", "C", "C", "D", "E", "B", "C", "C"} ;
+        string correct_answer[20] = { "D", "E", "A", "E", "2.7", "A", "D", "5.4", "D", "C", "B", "C", "B", "C", "C", "D", "E", "B", "C", "C" } ;
         string file_name = "Electrochemistry_Hard.txt";  //file name containing the questions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
 
@@ -496,13 +496,13 @@ void thermochemistry( int choice, int * & heal, int size2, string * & report, in
         report[index] = "Easy";
         index++;
         //An array containing the correct answers
-        string correct_answer[20] = {"D", "A", "D", "B", "D", "THERMOCHEMISTRY", "C", "J", "C", "A", "B", "EXOTHERMIC", "A", "B", "D", "D", "D", "GLASS-CALORIMETER", "B", "D"} ;
+        string correct_answer[20] = { "D", "A", "D", "B", "D", "THERMOCHEMISTRY", "C", "J", "C", "A", "B", "EXOTHERMIC", "A", "B", "D", "D", "D", "GLASS-CALORIMETER", "B", "D" } ;
         string file_name = "Thermochemistry_Easy.txt";  // file having the questions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );  // Playing the game
 
     //choice for medium level 
     }
-    else if (choice == 2 )
+    else if ( choice == 2 )
     {
         //checking if the array size is need to be increased or not
         if ( index >= arraysize )
@@ -513,7 +513,7 @@ void thermochemistry( int choice, int * & heal, int size2, string * & report, in
         report[index] = "Medium";
         index++;
         //An array containing the correct answers
-        string correct_answer[20] = {"STATE-FUNCTIONS", "A", "A", "A", "C", "B", "C", "B", "A", "D", "D", "D", "C", "B", "A", "C", "GIBBS-ENERGY", "A", "D", "A"} ;
+        string correct_answer[20] = { "STATE-FUNCTIONS", "A", "A", "A", "C", "B", "C", "B", "A", "D", "D", "D", "C", "B", "A", "C", "GIBBS-ENERGY", "A", "D", "A" } ;
         string file_name = "Thermochemistry_Medium.txt"; //file having the questions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );  //playing the game
 
@@ -530,7 +530,7 @@ void thermochemistry( int choice, int * & heal, int size2, string * & report, in
         report[index] = "Hard";
         index++;
         // An array containing the correct answers
-        string correct_answer[20] = {"E", "A", "+30.0", "C", "E", "D", "B", "D", "A", "-581.0", "C", "A", "A", "A", "E", "-140.0", "C", "A", "D", "D"} ;
+        string correct_answer[20] = { "E", "A", "+30.0", "C", "E", "D", "B", "D", "A", "-581.0", "C", "A", "A", "A", "E", "-140.0", "C", "A", "D", "D" } ;
         string file_name = "Thermochemistry_Hard.txt"; //file containing the questions
         game_play( correct_answer, file_name, heal, size2, report, arraysize, index );   // Playing the game
     }
@@ -645,7 +645,7 @@ void topic_report( string filename,  int count, double correct, bool newflag, bo
     index = filename.find("_");
     filename = filename.erase( index, 1 );
     filename = filename.insert( index, " ");
-    if (newflag == true)
+    if ( newflag == true )
     {
     cout << "The Topic ended!\n\n";
 	
@@ -683,9 +683,9 @@ void final_report( string * & report, int index )
     cout << setfill(' ');
 
     //printing scores
-    for ( int i = 0; i < index; i += 3)
+    for ( int i = 0; i < index; i += 3 )
     {
-        cout << setw(20) << report[i] << setw(10) << "|" << setw(10) << report[i + 1] << setw(10) << "|" << setw(5) << report[i + 2] << "%" << endl;
+        cout << setw(20) << report[i] << setw(10) << "|" << setw(10) << report[i + 1] << setw(10) << "|" << setw(5) << report[ i + 2 ] << "%" << endl;
     }
 
     cout << endl << endl;
@@ -707,7 +707,7 @@ int main()
     cin >> size;
 
     // For checking if selection is within range or not
-    while ( size != "7" && size != "8" && size != "3" && size != "4" && size != "5" && size != "6")
+    while ( size != "7" && size != "8" && size != "3" && size != "4" && size != "5" && size != "6" )
     {
         cout << "Invalid answer! Please enter a number between 3 to 8 inclusive. \n";
         typewriter( Dynamic_memory, 5000 );
@@ -728,7 +728,7 @@ int main()
     }
 
 
-    data_storing( 50,size2,0 );  //storing initial data of the player
+    data_storing( 50, size2, 0 );  //storing initial data of the player
 
 //--------------------------------------------------------------------------------------------
     //Creating Dynamic array for report production
@@ -771,7 +771,7 @@ int main()
         {
             break;  // break the loop
         }
-        if (game_status.health > 0)
+        if ( game_status.health > 0 )
 	{
 		typewriter( continue_game, 5000 );
 	
@@ -789,7 +789,7 @@ int main()
         }
 	}	
 
-    }while ( (continue_answer == "Y" || continue_answer == "y") &&  game_status.health > 0);
+    }while ( ( continue_answer == "Y" || continue_answer == "y" ) &&  game_status.health > 0 );
 
 
 
