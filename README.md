@@ -66,8 +66,8 @@ ________________________________________________________________________________
 ## Non-Standard C/C++ Libraries:
 
 * #include <time.h> : Used to initialize seed of srand to current time
-* #include <unistd.h> : Used to impliment sleep and usleep functions in the game if you are using linux   operating system
-* #include <windows.h> : if you are using this program on windows because it is recuired for sleep function
+* #include <unistd.h> : Used to implement sleep and usleep functions in the game if you are using linux  operating system
+* #include <windows.h> : if you are using this program on windows because it is required for sleep function. However, this game won't work on windows as some other changes had to be made for it to be compaitable in windows.
 
 _____________________________________________________________________________________________________________________________________________________________________
 
